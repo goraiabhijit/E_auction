@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>E-Auction</title>
+
+
+    <style>
+
+        /* =========================
+           RESET
+        ========================= */
+
+        * {
+
+            margin: 0;
+            padding: 0;
+
+            box-sizing: border-box;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+
+        html {
+
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            background: #101827;
+
+            color: white;
+        }
+
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            height: 84px;
+
+            width: 100%;
+
+            background: #101827;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            border-top: 3px solid #f59e0b;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0, 0, 0, 0.25);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+        }
+
+
+
+        /* =========================
+           LOGO
+        ========================= */
+
+        .logo {
+
+            font-size: 30px;
+
+            font-weight: bold;
+
+            color: white;
+
+            letter-spacing: -1px;
+        }
+
+
+        .logo span {
+
+            color: #f59e0b;
+        }
+
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .nav-buttons {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .nav-link {
+
+            background: transparent;
+
+            color: white;
+
+            border: none;
+
+            padding: 11px 15px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .nav-link:hover {
+
+            color: #f59e0b;
+        }
+
+
+
+        /* =========================
+           LOGIN BUTTON
+        ========================= */
+
+        .login-btn {
+
+            background: transparent;
+
+            color: white;
+
+            border: 1px solid #f59e0b;
+
+            padding: 11px 20px;
+
+            border-radius: 6px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .login-btn:hover {
+
+            background: #f59e0b;
+
+            color: #111827;
+        }
+
+
+
+        /* =========================
+           SIGN UP BUTTON
+        ========================= */
+
+        .signup-btn {
+
+            background: #f59e0b;
+
+            color: #111827;
+
+            border: 1px solid #f59e0b;
+
+            padding: 11px 20px;
+
+            border-radius: 6px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .signup-btn:hover {
+
+            background: #d97706;
+
+            color: white;
+        }
+
+
+
+        /* =========================
+           HERO SECTION
+        ========================= */
+
+        .hero {
+
+            min-height:
+                calc(100vh - 84px);
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 60px 7%;
+
+            background:
+
+                radial-gradient(
+                    circle at 80% 50%,
+                    rgba(245, 158, 11, 0.08),
+                    transparent 35%
+                ),
+
+                #101827;
+        }
+
+
+        .hero-content {
+
+            max-width: 850px;
+        }
+
+
+
+        /* =========================
+           HERO TITLE
+        ========================= */
+
+        .hero-title {
+
+            font-size: 62px;
+
+            line-height: 1.1;
+
+            font-weight: 700;
+
+            margin-bottom: 28px;
+        }
+
+
+        .white-text {
+
+            color: white;
+        }
+
+
+        .orange-text {
+
+            color: #f59e0b;
+        }
+
+
+
+        /* =========================
+           DESCRIPTION
+        ========================= */
+
+        .hero-description {
+
+            max-width: 780px;
+
+            font-size: 19px;
+
+            line-height: 1.8;
+
+            color: #e5e7eb;
+
+            margin-bottom: 35px;
+        }
+
+
+
+        /* =========================
+           REGISTER NOW BUTTON
+        ========================= */
+
+        .register-btn {
+
+            background: #f59e0b;
+
+            color: #111827;
+
+            border: none;
+
+            padding: 15px 28px;
+
+            border-radius: 7px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .register-btn:hover {
+
+            background: #d97706;
+
+            color: white;
+        }
+
+
+
+        /* =========================
+           ABOUT SECTION
+        ========================= */
+
+        .about-section {
+
+            background: #111827;
+
+            padding: 90px 7%;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 60px;
+
+            align-items: center;
+        }
+
+
+        .about-content h2 {
+
+            font-size: 42px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .about-content h2 span {
+
+            color: #f59e0b;
+        }
+
+
+        .about-content p {
+
+            color: #d1d5db;
+
+            font-size: 17px;
+
+            line-height: 1.8;
+
+            margin-bottom: 18px;
+        }
+
+
+
+        /* =========================
+           ABOUT CARDS
+        ========================= */
+
+        .about-cards {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 20px;
+        }
+
+
+        .about-card {
+
+            background: #1f2937;
+
+            padding: 25px;
+
+            border-radius: 10px;
+
+            border-left:
+                4px solid #f59e0b;
+
+            transition: 0.3s;
+        }
+
+
+        .about-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            background: #263244;
+        }
+
+
+        .about-card h3 {
+
+            font-size: 19px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .about-card p {
+
+            color: #cbd5e1;
+
+            line-height: 1.6;
+
+            font-size: 14px;
+        }
+
+
+
+        /* =========================
+           FEEDBACK SECTION
+        ========================= */
+
+        .feedback-section {
+
+            background: #f3f6fa;
+
+            color: #111827;
+
+            padding: 90px 7%;
+        }
+
+
+        .feedback-title {
+
+            text-align: center;
+
+            margin-bottom: 40px;
+        }
+
+
+        .feedback-title h2 {
+
+            font-size: 42px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .feedback-title p {
+
+            color: #64748b;
+
+            font-size: 17px;
+        }
+
+
+
+        /* =========================
+           FEEDBACK FORM
+        ========================= */
+
+        .feedback-form {
+
+            max-width: 700px;
+
+            margin: auto;
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 8px 30px
+                rgba(0, 0, 0, 0.10);
+        }
+
+
+        .form-group {
+
+            margin-bottom: 20px;
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: bold;
+
+            color: #1e293b;
+        }
+
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius: 6px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+
+            border-color: #f59e0b;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(245, 158, 11, 0.15);
+        }
+
+
+        .form-group textarea {
+
+            min-height: 140px;
+
+            resize: vertical;
+        }
+
+
+
+        /* =========================
+           FEEDBACK SUBMIT
+        ========================= */
+
+        .feedback-submit {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 6px;
+
+            background: #f59e0b;
+
+            color: #111827;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .feedback-submit:hover {
+
+            background: #d97706;
+
+            color: white;
+        }
+
+
+
+        /* =========================
+           SUCCESS MESSAGE
+        ========================= */
+
+        .success-message {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            background: #dcfce7;
+
+            color: #166534;
+
+            border-radius: 6px;
+
+            text-align: center;
+
+            font-weight: bold;
+        }
+
+
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal {
+
+            display: none;
+
+            position: fixed;
+
+            left: 0;
+
+            top: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background:
+                rgba(0, 0, 0, 0.75);
+
+            z-index: 9999;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+
+
+        /* =========================
+           MODAL CONTENT
+        ========================= */
+
+        .modal-content {
+
+            background: white;
+
+            color: #111827;
+
+            width: 100%;
+
+            max-width: 450px;
+
+            padding: 35px;
+
+            border-radius: 12px;
+
+            position: relative;
+
+            box-shadow:
+                0 15px 50px
+                rgba(0, 0, 0, 0.35);
+
+            animation:
+                modalOpen 0.25s ease;
+        }
+
+
+        @keyframes modalOpen {
+
+            from {
+
+                transform:
+                    scale(0.8);
+
+                opacity: 0;
+            }
+
+            to {
+
+                transform:
+                    scale(1);
+
+                opacity: 1;
+            }
+        }
+
+
+
+        /* =========================
+           CLOSE BUTTON
+        ========================= */
+
+        .close {
+
+            position: absolute;
+
+            right: 20px;
+
+            top: 15px;
+
+            font-size: 28px;
+
+            color: #64748b;
+
+            cursor: pointer;
+        }
+
+
+        .close:hover {
+
+            color: #111827;
+        }
+
+
+
+        /* =========================
+           MODAL TITLE
+        ========================= */
+
+        .modal-content h2 {
+
+            font-size: 30px;
+
+            margin-bottom: 25px;
+
+            color: #111827;
+        }
+
+
+        .modal-content h2 span {
+
+            color: #f59e0b;
+        }
+
+
+
+        /* =========================
+           MODAL FORM
+        ========================= */
+
+        .modal-form-group {
+
+            margin-bottom: 18px;
+        }
+
+
+        .modal-form-group label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: bold;
+        }
+
+
+        .modal-form-group input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius: 6px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+
+        .modal-form-group input:focus {
+
+            border-color: #f59e0b;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(245, 158, 11, 0.15);
+        }
+
+
+
+        /* =========================
+           MODAL SUBMIT
+        ========================= */
+
+        .modal-submit {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 6px;
+
+            background: #f59e0b;
+
+            color: #111827;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+            transition: 0.3s;
+        }
+
+
+        .modal-submit:hover {
+
+            background: #d97706;
+
+            color: white;
+        }
+
+
+
+        /* =========================
+           MODAL MESSAGE
+        ========================= */
+
+        .modal-message {
+
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            background: #dcfce7;
+
+            color: #166534;
+
+            border-radius: 6px;
+
+            text-align: center;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            background: #030712;
+
+            padding: 25px 7%;
+
+            text-align: center;
+
+            color: #9ca3af;
+
+            font-size: 14px;
+        }
+
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+
+                padding: 0 5%;
+            }
+
+
+            .hero {
+
+                padding: 50px 5%;
+            }
+
+
+            .hero-title {
+
+                font-size: 50px;
+            }
+
+
+            .about-section {
+
+                grid-template-columns: 1fr;
+
+                padding: 70px 5%;
+            }
+        }
+
+
+
+        @media (max-width: 650px) {
+
+            .navbar {
+
+                height: auto;
+
+                min-height: 75px;
+
+                padding: 15px 20px;
+
+                flex-wrap: wrap;
+
+                gap: 10px;
+            }
+
+
+            .logo {
+
+                font-size: 24px;
+            }
+
+
+            .nav-buttons {
+
+                gap: 3px;
+
+                flex-wrap: wrap;
+
+                justify-content: flex-end;
+            }
+
+
+            .nav-link {
+
+                padding: 8px;
+
+                font-size: 13px;
+            }
+
+
+            .login-btn,
+            .signup-btn {
+
+                padding: 8px 11px;
+
+                font-size: 12px;
+            }
+
+
+            .hero {
+
+                min-height:
+                    calc(100vh - 100px);
+
+                padding: 50px 20px;
+            }
+
+
+            .hero-title {
+
+                font-size: 42px;
+            }
+
+
+            .hero-description {
+
+                font-size: 16px;
+
+                line-height: 1.7;
+            }
+
+
+            .about-cards {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .feedback-section {
+
+                padding: 65px 20px;
+            }
+
+
+            .feedback-title h2 {
+
+                font-size: 32px;
+            }
+
+
+            .feedback-form {
+
+                padding: 25px;
+            }
+
+
+            .modal-content {
+
+                padding: 28px 22px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================
+         NAVBAR
+    ================================== -->
+
+    <header class="navbar">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            E-<span>Auction</span>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <div class="nav-buttons">
+
+
+            <!-- ABOUT -->
+
+            <button
+                type="button"
+                class="nav-link"
+                onclick="goToAbout()">
+
+                About
+
+            </button>
+
+
+            <!-- FEEDBACK -->
+
+            <button
+                type="button"
+                class="nav-link"
+                onclick="goToFeedback()">
+
+                Feedback
+
+            </button>
+
+
+            <!-- LOGIN -->
+
+            <button
+                type="button"
+                class="login-btn"
+                onclick="openLogin()">
+
+                Login
+
+            </button>
+
+
+            <!-- SIGN UP -->
+
+            <button
+                type="button"
+                class="signup-btn"
+                onclick="openSignup()">
+
+                Sign Up
+
+            </button>
+
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =================================
+         HERO
+    ================================== -->
+
+    <main class="hero">
+
+
+        <div class="hero-content">
+
+
+            <h1 class="hero-title">
+
+                <span class="white-text">
+
+                    Bid Smart.
+
+                </span>
+
+                <span class="orange-text">
+
+                    Win Big.
+
+                </span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                Welcome to E-Auction, a secure and
+                transparent online auction platform
+                where buyers and sellers connect to
+                discover, bid and win amazing products.
+
+            </p>
+
+
+            <!-- REGISTER NOW -->
+
+            <button
+                type="button"
+                class="register-btn"
+                onclick="openSignup()">
+
+                Register Now
+
+            </button>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =================================
+         ABOUT
+    ================================== -->
+
+    <section
+        class="about-section"
+        id="about">
+
+
+        <div class="about-content">
+
+
+            <h2>
+
+                About
+                <span>E-Auction</span>
+
+            </h2>
+
+
+            <p>
+
+                E-Auction is an online auction platform
+                designed to make buying and selling
+                simple, transparent and accessible.
+
+            </p>
+
+
+            <p>
+
+                Our platform allows users to participate
+                in auctions, place bids and purchase
+                products through a convenient online
+                environment.
+
+            </p>
+
+
+            <p>
+
+                We focus on providing a secure bidding
+                environment with clear auction information
+                and an easy-to-use interface.
+
+            </p>
+
+
+        </div>
+
+
+        <div class="about-cards">
+
+
+            <div class="about-card">
+
+                <h3>
+
+                    🔐 Secure
+
+                </h3>
+
+                <p>
+
+                    Secure user accounts and
+                    protected bidding process.
+
+                </p>
+
+            </div>
+
+
+            <div class="about-card">
+
+                <h3>
+
+                    ⚡ Fast
+
+                </h3>
+
+                <p>
+
+                    Fast auction updates and
+                    a smooth bidding experience.
+
+                </p>
+
+            </div>
+
+
+            <div class="about-card">
+
+                <h3>
+
+                    ⚖️ Transparent
+
+                </h3>
+
+                <p>
+
+                    Clear bidding information
+                    for every auction.
+
+                </p>
+
+            </div>
+
+
+            <div class="about-card">
+
+                <h3>
+
+                    🌎 Accessible
+
+                </h3>
+
+                <p>
+
+                    Participate in auctions
+                    from anywhere.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================
+         FEEDBACK
+    ================================== -->
+
+    <section
+        class="feedback-section"
+        id="feedback">
+
+
+        <div class="feedback-title">
+
+
+            <h2>
+
+                Give Us Your Feedback
+
+            </h2>
+
+
+            <p>
+
+                Your feedback helps us improve
+                the E-Auction experience.
+
+            </p>
+
+
+        </div>
+
+
+        <form
+            class="feedback-form"
+            onsubmit="submitFeedback(event)">
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+                <label for="feedbackName">
+
+                    Name
+
+                </label>
+
+                <input
+                    type="text"
+                    id="feedbackName"
+                    placeholder="Enter your name"
+                    required>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="feedbackEmail">
+
+                    Email
+
+                </label>
+
+                <input
+                    type="email"
+                    id="feedbackEmail"
+                    placeholder="Enter your email"
+                    required>
+
+            </div>
+
+
+            <!-- RATING -->
+
+            <div class="form-group">
+
+                <label for="rating">
+
+                    Rating
+
+                </label>
+
+                <select
+                    id="rating"
+                    required>
+
+                    <option value="">
+
+                        Select your rating
+
+                    </option>
+
+                    <option value="5">
+
+                        ⭐⭐⭐⭐⭐ Excellent
+
+                    </option>
+
+                    <option value="4">
+
+                        ⭐⭐⭐⭐ Very Good
+
+                    </option>
+
+                    <option value="3">
+
+                        ⭐⭐⭐ Good
+
+                    </option>
+
+                    <option value="2">
+
+                        ⭐⭐ Average
+
+                    </option>
+
+                    <option value="1">
+
+                        ⭐ Poor
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- MESSAGE -->
+
+            <div class="form-group">
+
+                <label for="feedbackMessage">
+
+                    Feedback
+
+                </label>
+
+                <textarea
+                    id="feedbackMessage"
+                    placeholder="Write your feedback here..."
+                    required></textarea>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="feedback-submit">
+
+                Submit Feedback
+
+            </button>
+
+
+            <!-- SUCCESS -->
+
+            <div
+                class="success-message"
+                id="feedbackSuccess">
+
+            </div>
+
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =================================
+         FOOTER
+    ================================== -->
+
+    <footer>
+
+        © 2026 E-Auction.
+        All Rights Reserved.
+
+    </footer>
+
+
+
+    <!-- =================================
+         LOGIN MODAL
+    ================================== -->
+
+    <div
+        class="modal"
+        id="loginModal">
+
+
+        <div class="modal-content">
+
+
+            <!-- CLOSE -->
+
+            <span
+                class="close"
+                onclick="closeModal('loginModal')">
+
+                &times;
+
+            </span>
+
+
+            <h2>
+
+                Login to
+                <span>E-Auction</span>
+
+            </h2>
+
+
+            <form
+                onsubmit="loginUser(event)">
+
+
+                <!-- EMAIL -->
+
+                <div class="modal-form-group">
+
+                    <label for="loginEmail">
+
+                        Email
+
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="modal-form-group">
+
+                    <label for="loginPassword">
+
+                        Password
+
+                    </label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter your password"
+                        required>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="modal-submit">
+
+                    Login
+
+                </button>
+
+
+                <div
+                    class="modal-message"
+                    id="loginMessage">
+
+                    ✓ Login successful!
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================
+         SIGN UP MODAL
+    ================================== -->
+
+    <div
+        class="modal"
+        id="signupModal">
+
+
+        <div class="modal-content">
+
+
+            <!-- CLOSE -->
+
+            <span
+                class="close"
+                onclick="closeModal('signupModal')">
+
+                &times;
+
+            </span>
+
+
+            <h2>
+
+                Create
+                <span>Account</span>
+
+            </h2>
+
+
+            <form
+                onsubmit="signupUser(event)">
+
+
+                <!-- NAME -->
+
+                <div class="modal-form-group">
+
+                    <label for="signupName">
+
+                        Full Name
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="signupName"
+                        placeholder="Enter your full name"
+                        required>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="modal-form-group">
+
+                    <label for="signupEmail">
+
+                        Email
+
+                    </label>
+
+                    <input
+                        type="email"
+                        id="signupEmail"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="modal-form-group">
+
+                    <label for="signupPassword">
+
+                        Password
+
+                    </label>
+
+                    <input
+                        type="password"
+                        id="signupPassword"
+                        placeholder="Create a password"
+                        minlength="6"
+                        required>
+
+                </div>
+
+
+                <!-- CONFIRM PASSWORD -->
+
+                <div class="modal-form-group">
+
+                    <label for="confirmPassword">
+
+                        Confirm Password
+
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm your password"
+                        required>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="modal-submit">
+
+                    Sign Up
+
+                </button>
+
+
+                <div
+                    class="modal-message"
+                    id="signupMessage">
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================
+         JAVASCRIPT
+    ================================== -->
+
+    <script>
+
+
+        /* ===============================
+           ABOUT
+        =============================== */
+
+        function goToAbout() {
+
+            document
+                .getElementById("about")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+
+
+        /* ===============================
+           FEEDBACK
+        =============================== */
+
+        function goToFeedback() {
+
+            document
+                .getElementById("feedback")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+
+
+        /* ===============================
+           OPEN LOGIN
+        =============================== */
+
+        function openLogin() {
+
+            var loginModal =
+                document.getElementById(
+                    "loginModal"
+                );
+
+            loginModal.style.display = "flex";
+
+        }
+
+
+
+        /* ===============================
+           OPEN SIGN UP
+        =============================== */
+
+        function openSignup() {
+
+            var signupModal =
+                document.getElementById(
+                    "signupModal"
+                );
+
+            signupModal.style.display = "flex";
+
+        }
+
+
+
+        /* ===============================
+           CLOSE MODAL
+        =============================== */
+
+        function closeModal(modalId) {
+
+            var modal =
+                document.getElementById(
+                    modalId
+                );
+
+            modal.style.display = "none";
+
+        }
+
+
+
+        /* ===============================
+           CLICK OUTSIDE MODAL
+        =============================== */
+
+        window.addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    event.target.classList
+                        .contains("modal")
+                ) {
+
+                    event.target.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+
+        /* ===============================
+           LOGIN
+        =============================== */
+
+        function loginUser(event) {
+
+            event.preventDefault();
+
+
+            var email =
+                document.getElementById(
+                    "loginEmail"
+                ).value.trim();
+
+
+            var password =
+                document.getElementById(
+                    "loginPassword"
+                ).value;
+
+
+            if (
+                email === "" ||
+                password === ""
+            ) {
+
+                alert(
+                    "Please fill all fields."
+                );
+
+                return;
+
+            }
+
+
+            var message =
+                document.getElementById(
+                    "loginMessage"
+                );
+
+
+            message.innerHTML =
+                "✓ Login form submitted successfully.";
+
+
+            message.style.display =
+                "block";
+
+
+            setTimeout(function() {
+
+                message.style.display =
+                    "none";
+
+                closeModal(
+                    "loginModal"
+                );
+
+            }, 2000);
+
+        }
+
+
+
+        /* ===============================
+           SIGN UP
+        =============================== */
+
+        function signupUser(event) {
+
+            event.preventDefault();
+
+
+            var name =
+                document.getElementById(
+                    "signupName"
+                ).value.trim();
+
+
+            var email =
+                document.getElementById(
+                    "signupEmail"
+                ).value.trim();
+
+
+            var password =
+                document.getElementById(
+                    "signupPassword"
+                ).value;
+
+
+            var confirmPassword =
+                document.getElementById(
+                    "confirmPassword"
+                ).value;
+
+
+            /* PASSWORD MATCH */
+
+            if (
+                password !==
+                confirmPassword
+            ) {
+
+                alert(
+                    "Password and Confirm Password do not match."
+                );
+
+                document
+                    .getElementById(
+                        "confirmPassword"
+                    )
+                    .focus();
+
+                return;
+
+            }
+
+
+            /* PASSWORD LENGTH */
+
+            if (
+                password.length < 6
+            ) {
+
+                alert(
+                    "Password must contain at least 6 characters."
+                );
+
+                document
+                    .getElementById(
+                        "signupPassword"
+                    )
+                    .focus();
+
+                return;
+
+            }
+
+
+            var message =
+                document.getElementById(
+                    "signupMessage"
+                );
+
+
+            message.innerHTML =
+                "✓ Welcome " +
+                name +
+                "! Your account has been created successfully.";
+
+
+            message.style.display =
+                "block";
+
+
+            setTimeout(function() {
+
+                message.style.display =
+                    "none";
+
+
+                closeModal(
+                    "signupModal"
+                );
+
+
+                document
+                    .getElementById(
+                        "signupName"
+                    )
+                    .value = "";
+
+
+                document
+                    .getElementById(
+                        "signupEmail"
+                    )
+                    .value = "";
+
+
+                document
+                    .getElementById(
+                        "signupPassword"
+                    )
+                    .value = "";
+
+
+                document
+                    .getElementById(
+                        "confirmPassword"
+                    )
+                    .value = "";
+
+
+            }, 2500);
+
+        }
+
+
+
+        /* ===============================
+           FEEDBACK SUBMISSION
+        =============================== */
+
+        function submitFeedback(event) {
+
+            event.preventDefault();
+
+
+            var name =
+                document.getElementById(
+                    "feedbackName"
+                ).value.trim();
+
+
+            var success =
+                document.getElementById(
+                    "feedbackSuccess"
+                );
+
+
+            success.innerHTML =
+                "✓ Thank you, " +
+                name +
+                "! Your feedback has been submitted successfully.";
+
+
+            success.style.display =
+                "block";
+
+
+            document
+                .querySelector(
+                    ".feedback-form"
+                )
+                .reset();
+
+
+            setTimeout(function() {
+
+                success.style.display =
+                    "none";
+
+            }, 5000);
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

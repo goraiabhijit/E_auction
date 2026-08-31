@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Auction</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #101827; color: white; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* NAVBAR */
+        .navbar { height: 84px; width: 100%; background: #101827; display: flex; align-items: center; justify-content: space-between; padding: 0 7%; border-top: 3px solid #f59e0b; box-shadow: 0 3px 12px rgba(0,0,0,0.25); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 30px; font-weight: bold; color: white; letter-spacing: -1px; }
+        .logo span { color: #f59e0b; }
+        .nav-buttons { display: flex; gap: 10px; }
+        
+        /* BUTTONS */
+        .btn { padding: 11px 20px; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; }
+        .login-btn { background: transparent; color: white; border: 1px solid #f59e0b; }
+        .login-btn:hover { background: #f59e0b; color: #111827; }
+        .signup-btn { background: #f59e0b; color: #111827; border: 1px solid #f59e0b; }
+        .signup-btn:hover { background: #d97706; color: white; }
+        .register-btn { background: #f59e0b; color: #111827; border: none; padding: 15px 28px; border-radius: 7px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .register-btn:hover { background: #d97706; color: white; }
+        
+        /* HERO */
+        .hero { flex: 1; display: flex; align-items: center; padding: 60px 7%; background: radial-gradient(circle at 80% 50%, rgba(245, 158, 11, 0.08), transparent 35%), #101827; }
+        .hero-content { max-width: 850px; }
+        .hero-title { font-size: 62px; line-height: 1.1; font-weight: 700; margin-bottom: 28px; }
+        .orange-text { color: #f59e0b; }
+        .hero-description { max-width: 780px; font-size: 19px; line-height: 1.8; color: #e5e7eb; margin-bottom: 35px; }
+        
+        /* FOOTER */
+        footer { background: #030712; padding: 25px 7%; text-align: center; color: #9ca3af; font-size: 14px; }
+        
+        /* MODALS */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: white; color: #111827; width: 100%; max-width: 450px; padding: 35px; border-radius: 12px; position: relative; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35); animation: modalOpen 0.25s ease; }
+        @keyframes modalOpen { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .close { position: absolute; right: 20px; top: 15px; font-size: 28px; color: #64748b; cursor: pointer; }
+        .close:hover { color: #111827; }
+        .modal-content h2 { font-size: 30px; margin-bottom: 25px; color: #111827; }
+        .modal-content h2 span { color: #f59e0b; }
+        
+        /* FORM ELEMENTS */
+        .modal-form-group { margin-bottom: 18px; }
+        .modal-form-group label { display: block; margin-bottom: 7px; font-weight: bold; }
+        .modal-form-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; outline: none; }
+        .modal-form-group input:focus { border-color: #f59e0b; box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15); }
+        .modal-submit { width: 100%; padding: 13px; border: none; border-radius: 6px; background: #f59e0b; color: #111827; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 5px; transition: 0.3s; }
+        .modal-submit:hover { background: #d97706; color: white; }
+
+        /* RESPONSIVE */
+        @media (max-width: 650px) {
+            .navbar { height: auto; padding: 15px 20px; flex-wrap: wrap; gap: 10px; }
+            .logo { font-size: 24px; }
+            .hero-title { font-size: 42px; }
+            .hero-description { font-size: 16px; }
+            .modal-content { padding: 28px 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="logo">E-<span>Auction</span></div>
+        <div class="nav-buttons">
+            <button type="button" class="btn login-btn" onclick="openModal('loginModal')">Login</button>
+            <button type="button" class="btn signup-btn" onclick="openModal('signupModal')">Sign Up</button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <main class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Bid Smart. <span class="orange-text">Win Big.</span>
+            </h1>
+            <p class="hero-description">
+                Welcome to E-Auction, a secure and transparent online auction platform where buyers and sellers connect to discover, bid, and win amazing products.
+            </p>
+            <button type="button" class="register-btn" onclick="openModal('signupModal')">Register Now</button>
+        </div>
+    </main>
+
+    <!-- LOGIN MODAL -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login to <span>E-Auction</span></h2>
+            
+            <form action="LoginServlet" method="POST">
+                <div class="modal-form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="modal-submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SIGN UP MODAL -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h2>Create <span>Account</span></h2>
+            
+            <form action="RegisterServlet" method="POST" onsubmit="return validatePassword()">
+                <div class="modal-form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" name="fullName" placeholder="Enter your full name" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" name="password" placeholder="Create a password" minlength="6" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="modal-submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2026 E-Auction. All Rights Reserved.
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "flex";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains("modal")) {
+                event.target.style.display = "none";
+            }
+        };
+
+        function validatePassword() {
+            var password = document.getElementById("signupPassword").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                document.getElementById("confirmPassword").focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
