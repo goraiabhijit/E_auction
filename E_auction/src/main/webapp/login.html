@@ -35,19 +35,20 @@
         
         /* MODALS */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: white; color: #111827; width: 100%; max-width: 480px; padding: 30px; border-radius: 12px; position: relative; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35); animation: modalOpen 0.25s ease; max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: white; color: #111827; width: 100%; max-width: 520px; padding: 30px; border-radius: 12px; position: relative; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35); animation: modalOpen 0.25s ease; max-height: 90vh; overflow-y: auto; }
         @keyframes modalOpen { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .close { position: absolute; right: 20px; top: 15px; font-size: 28px; color: #64748b; cursor: pointer; }
         .close:hover { color: #111827; }
-        .modal-content h2 { font-size: 28px; margin-bottom: 20px; color: #111827; }
+        .modal-content h2 { font-size: 26px; margin-bottom: 18px; color: #111827; }
         .modal-content h2 span { color: #f59e0b; }
         
-        /* FORM ELEMENTS */
-        .modal-form-group { margin-bottom: 14px; }
-        .modal-form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
-        .modal-form-group input, .modal-form-group select, .modal-form-group textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; }
+        /* FORM ELEMENTS & SECTION TITLES */
+        .section-heading { font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #f59e0b; font-weight: bold; margin: 15px 0 10px 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; }
+        .modal-form-group { margin-bottom: 12px; }
+        .modal-form-group label { display: block; margin-bottom: 4px; font-weight: bold; font-size: 13px; color: #334155; }
+        .modal-form-group input, .modal-form-group select, .modal-form-group textarea { width: 100%; padding: 9px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; }
         .modal-form-group input:focus, .modal-form-group select:focus, .modal-form-group textarea:focus { border-color: #f59e0b; box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15); }
-        .modal-submit { width: 100%; padding: 12px; border: none; border-radius: 6px; background: #f59e0b; color: #111827; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .modal-submit { width: 100%; padding: 12px; border: none; border-radius: 6px; background: #f59e0b; color: #111827; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s; }
         .modal-submit:hover { background: #d97706; color: white; }
 
         /* RESPONSIVE */
@@ -93,11 +94,11 @@
             <form action="LoginServlet" method="POST">
                 <div class="modal-form-group">
                     <label for="loginEmail">Email ID</label>
-                    <input type="email" id="loginEmail" name="EmailId" placeholder="Enter your Email ID" required>
+                    <input type="email" id="loginEmail" name="EmailId" placeholder="Enter Email ID" required>
                 </div>
                 <div class="modal-form-group">
                     <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" name="Password" placeholder="Enter your Password" required>
+                    <input type="password" id="loginPassword" name="Password" placeholder="Enter Password" required>
                 </div>
                 <button type="submit" class="modal-submit">Login</button>
             </form>
@@ -111,6 +112,9 @@
             <h2>Create <span>Account</span></h2>
             
             <form action="RegisterServlet" method="POST">
+                <!-- Registration Section -->
+                <div class="section-heading">Personal Details</div>
+                
                 <div class="modal-form-group">
                     <label for="signupName">Name</label>
                     <input type="text" id="signupName" name="name" placeholder="Enter full name" required>
@@ -121,7 +125,7 @@
                 </div>
                 <div class="modal-form-group">
                     <label for="signupPassword">Password</label>
-                    <input type="password" id="signupPassword" name="password" placeholder="Create a password" required>
+                    <input type="password" id="signupPassword" name="password" placeholder="Create password" required>
                 </div>
                 <div class="modal-form-group">
                     <label for="signupPhone">Phone Number</label>
@@ -140,6 +144,31 @@
                         <option value="Other">Other</option>
                     </select>
                 </div>
+
+                <!-- Bank Details Section -->
+                <div class="section-heading">Bank Details</div>
+
+                <div class="modal-form-group">
+                    <label for="bankAccountHolder">Account Holder Name</label>
+                    <input type="text" id="bankAccountHolder" name="Account Holder Name" placeholder="Enter account holder name" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="bankName">Bank Name</label>
+                    <input type="text" id="bankName" name="Bank Name" placeholder="Enter bank name" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="bankAccNumber">Account Number</label>
+                    <input type="text" id="bankAccNumber" name="Account Number" placeholder="Enter account number" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="bankIFSC">IFSC Code</label>
+                    <input type="text" id="bankIFSC" name="IFSC Code" placeholder="Enter IFSC code" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="bankBranch">Branch</label>
+                    <input type="text" id="bankBranch" name="Branch" placeholder="Enter branch name" required>
+                </div>
+
                 <button type="submit" class="modal-submit">Sign Up</button>
             </form>
         </div>
