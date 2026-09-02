@@ -1,0 +1,287 @@
+function openModal(id) {
+  document.getElementById(id).style.display = "flex";
+}
+
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
+window.onclick = function (event) {
+  if (event.target.classList.contains("modal")) {
+    event.target.style.display = "none";
+  }
+};
+
+function error(input, message) {
+  input.classList.remove("input-success");
+  input.classList.add("input-error");
+
+  const e = document.getElementById(input.id + "Error");
+
+  if (e) {
+    e.textContent = message;
+    e.style.display = "block";
+  }
+
+  return false;
+}
+
+function success(input) {
+  input.classList.remove("input-error");
+  input.classList.add("input-success");
+
+  const e = document.getElementById(input.id + "Error");
+
+  if (e) {
+    e.textContent = "";
+    e.style.display = "none";
+  }
+
+  return true;
+}
+
+function validateName(input) {
+  if (input.value.trim() === "") {
+    return error(input, "Name cannot be blank.");
+  }
+
+  return success(input);
+}
+
+function validateEmail(input) {
+  if (input.value.trim() === "") {
+    return error(input, "Email ID cannot be blank.");
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim())) {
+    return error(input, "Enter a valid email ID.");
+  }
+
+  return success(input);
+}
+
+function validatePassword(input) {
+  if (input.value.trim() === "") {
+    return error(input, "Password cannot be blank.");
+  }
+
+  return success(input);
+}
+
+function validateConfirmPassword(input) {
+  if (input.value.trim() === "") {
+    return error(input, "Confirm password cannot be blank.");
+  }
+
+  return success(input);
+}
+
+function validatePhone(input) {
+  if (input.value === "") {
+    return error(input, "Phone number cannot be blank.");
+  }
+
+  if (!/^\d+$/.test(input.value)) {
+    return error(input, "Phone number must contain numbers only.");
+  }
+
+  return success(input);
+}
+
+function validateAccountNumber(input) {
+  if (input.value.trim() === "") {
+    return error(input, "Account number cannot be blank.");
+  }
+
+  return success(input);
+}
+
+function validateIFSC(input) {
+  if (input.value.trim() === "") {
+    return error(input, "IFSC Code cannot be blank.");
+  }
+
+  return success(input);
+}
+
+function validateBlank(input) {
+  if (input.value.trim() === "") {
+    return error(input, "This field cannot be blank.");
+  }
+
+  return success(input);
+}
+
+document.getElementById("signupName").addEventListener("input", function () {
+  validateName(this);
+});
+
+document.getElementById("signupEmail").addEventListener("input", function () {
+  validateEmail(this);
+});
+
+document
+  .getElementById("signupPassword")
+  .addEventListener("input", function () {
+    validatePassword(this);
+
+    const confirm = document.getElementById("confirmPassword");
+
+    if (confirm.value !== "") {
+      validateConfirmPassword(confirm);
+    }
+  });
+
+document
+  .getElementById("confirmPassword")
+  .addEventListener("input", function () {
+    validateConfirmPassword(this);
+  });
+
+document.getElementById("signupPhone").addEventListener("input", function () {
+  validatePhone(this);
+});
+
+document.getElementById("signupAddress").addEventListener("input", function () {
+  validateBlank(this);
+});
+
+document.getElementById("signupGender").addEventListener("change", function () {
+  if (this.value === "") {
+    error(this, "Please select your gender.");
+  } else {
+    success(this);
+  }
+});
+
+document
+  .getElementById("bankAccountHolder")
+  .addEventListener("input", function () {
+    validateBlank(this);
+  });
+
+document.getElementById("bankName").addEventListener("input", function () {
+  validateBlank(this);
+});
+
+document.getElementById("bankAccNumber").addEventListener("input", function () {
+  validateAccountNumber(this);
+});
+
+document.getElementById("bankIFSC").addEventListener("input", function () {
+  validateIFSC(this);
+});
+
+document.getElementById("bankBranch").addEventListener("input", function () {
+  validateBlank(this);
+});
+
+document
+  .getElementById("signupForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const fields = [
+      document.getElementById("signupName"),
+      document.getElementById("signupEmail"),
+      document.getElementById("signupPassword"),
+      document.getElementById("confirmPassword"),
+      document.getElementById("signupPhone"),
+      document.getElementById("signupAddress"),
+      document.getElementById("signupGender"),
+      document.getElementById("bankAccountHolder"),
+      document.getElementById("bankName"),
+      document.getElementById("bankAccNumber"),
+      document.getElementById("bankIFSC"),
+      document.getElementById("bankBranch"),
+    ];
+
+    validateName(fields[0]);
+    validateEmail(fields[1]);
+    validatePassword(fields[2]);
+    validateConfirmPassword(fields[3]);
+    validatePhone(fields[4]);
+    validateBlank(fields[5]);
+
+    if (fields[6].value === "") {
+      error(fields[6], "Please select your gender.");
+    } else {
+      success(fields[6]);
+    }
+
+    validateBlank(fields[7]);
+    validateBlank(fields[8]);
+    validateAccountNumber(fields[9]);
+    validateIFSC(fields[10]);
+    validateBlank(fields[11]);
+
+    const firstError = this.querySelector(".input-error");
+
+    if (firstError) {
+      firstError.focus();
+      return;
+    }
+
+    this.submit();
+  });
+
+document.getElementById("loginEmail").addEventListener("input", function () {
+  validateEmail(this);
+});
+
+document.getElementById("loginPassword").addEventListener("input", function () {
+  if (this.value.trim() === "") {
+    error(this, "Password cannot be blank.");
+  } else {
+    success(this);
+  }
+});
+
+document
+  .getElementById("loginForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const email = document.getElementById("loginEmail");
+    const password = document.getElementById("loginPassword");
+
+    validateEmail(email);
+
+    if (password.value.trim() === "") {
+      error(password, "Password cannot be blank.");
+    } else {
+      success(password);
+    }
+
+    const firstError = this.querySelector(".input-error");
+
+    if (firstError) {
+      firstError.focus();
+      return;
+    }
+
+    this.submit();
+  });
+
+const fields = Array.from(
+  document.querySelectorAll(
+    "#signupForm input, #signupForm select, #signupForm textarea",
+  ),
+);
+
+fields.forEach(function (field, index) {
+  field.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+
+      if (field.classList.contains("input-error")) {
+        field.focus();
+        return;
+      }
+
+      if (index < fields.length - 1) {
+        fields[index + 1].focus();
+      }
+    }
+  });
+});
