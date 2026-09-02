@@ -1,12 +1,13 @@
-package com.eauction.model;
+package com.eauction.controller;
 
 import jakarta.servlet.ServletException;
+
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+import com.eauction.model.User;
 /**
  * Servlet implementation class RegisterServlet
  */
@@ -34,7 +35,26 @@ public class RegisterServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		// 1. Fetch form data using the exact 'name' attributes from register.jsp
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String mobile = request.getParameter("mobile");
+        String address = request.getParameter("address");
+
+        // 2. Wrap form values in your User POJO
+        User user = new User(name, email, password, mobile, address);
+
+        // 3. Delegate database save operation to UserDAO
+        UserDAO userDAO = new UserDAO();
+        boolean isSuccess = userDAO.insertUser(user);
+
+        // 4. Redirect based on query execution
+        if (isSuccess) {
+            response.sendRedirect("login.jsp?status=registered");
+        } else {
+            response.sendRedirect("register.jsp?error=failed");
+        }
 	}
 
 }

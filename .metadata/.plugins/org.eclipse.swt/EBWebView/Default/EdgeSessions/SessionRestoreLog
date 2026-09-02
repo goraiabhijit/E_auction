@@ -1,2 +1,7 @@
 {"logTime": "0831/142734", "session": "START"}
 {"logTime": "0831/142842", "session": "END"}
+{"logTime": "0902/130646", "session": "START"}
+{"logTime": "0902/130646", "level": "INFO", "location": "chrome\\browser\\sessions\\session_service_log.cc:326 EdgeLogSessionServiceMessage", "message": "SessionServiceEvent: kStart - {\r\n   \"crashed\": false,\r\n   \"type\": 0\r\n}\r\n"}
+{"logTime": "0902/130753", "session": "END"}
+{"logTime": "0902/130809", "session": "START"}
+{"logTime": "0902/130809", "level": "INFO", "location": "chrome\\browser\\sessions\\session_service_log.cc:326 EdgeLogSessionServiceMessage", "message": "SessionServiceEvent: kStart - {\r\n   \"crashed\": false,\r\n   \"type\": 0\r\n}\r\n"}
