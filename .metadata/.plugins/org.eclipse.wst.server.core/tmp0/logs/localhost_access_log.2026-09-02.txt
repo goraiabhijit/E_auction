@@ -120,3 +120,7 @@
 0:0:0:0:0:0:0:1 - - [02/Sep/2026:20:53:11 +0530] "GET /E_auction/login.css HTTP/1.1" 304 -
 0:0:0:0:0:0:0:1 - - [02/Sep/2026:20:53:11 +0530] "GET /E_auction/login.js HTTP/1.1" 304 -
 0:0:0:0:0:0:0:1 - - [02/Sep/2026:20:53:36 +0530] "POST /E_auction/RegisterServlet HTTP/1.1" 200 160
+127.0.0.1 - - [02/Sep/2026:20:58:17 +0530] "GET / HTTP/1.1" 404 752
+0:0:0:0:0:0:0:1 - - [02/Sep/2026:20:58:21 +0530] "GET /E_auction/login.html HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [02/Sep/2026:20:58:21 +0530] "GET /E_auction/login.js HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [02/Sep/2026:20:58:52 +0530] "POST /E_auction/RegisterServlet HTTP/1.1" 200 169
