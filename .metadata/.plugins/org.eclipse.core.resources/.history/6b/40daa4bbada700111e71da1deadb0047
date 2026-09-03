@@ -1,0 +1,266 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%
+    // Guard: redirect to sign-in if no session
+    String userName = (String) session.getAttribute("userName");
+    if (userName == null) {
+        response.sendRedirect("signin.html");
+        return;
+    }
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – E-Auction</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #101827;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      height: 84px;
+      width: 100%;
+      background: #101827;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 7%;
+      border-top: 3px solid #f59e0b;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: bold;
+      color: white;
+      letter-spacing: -1px;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: #f59e0b;
+    }
+
+    /* ── User dropdown ── */
+    .user-menu {
+      position: relative;
+    }
+
+    .user-trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: 1px solid #f59e0b;
+      border-radius: 6px;
+      padding: 9px 16px;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .user-trigger:hover {
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    .user-avatar {
+      width: 30px;
+      height: 30px;
+      background: #f59e0b;
+      color: #111827;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .chevron {
+      font-size: 11px;
+      transition: transform 0.2s;
+    }
+
+    .user-menu.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      min-width: 200px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      z-index: 2000;
+    }
+
+    .user-menu.open .dropdown {
+      display: block;
+    }
+
+    .dropdown-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid #334155;
+    }
+
+    .dropdown-header .name {
+      font-weight: bold;
+      font-size: 14px;
+      color: white;
+    }
+
+    .dropdown-header .label {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+
+    .dropdown-item {
+      display: block;
+      width: 100%;
+      padding: 12px 16px;
+      background: transparent;
+      border: none;
+      color: #e5e7eb;
+      font-size: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+
+    .dropdown-item:hover {
+      background: #334155;
+    }
+
+    .dropdown-item.logout {
+      color: #f87171;
+      border-top: 1px solid #334155;
+    }
+
+    .dropdown-item.logout:hover {
+      background: rgba(248, 113, 113, 0.1);
+    }
+
+    /* ── Page content ── */
+    .content {
+      flex: 1;
+      padding: 50px 7%;
+    }
+
+    .welcome {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .welcome span {
+      color: #f59e0b;
+    }
+
+    .subtitle {
+      color: #9ca3af;
+      font-size: 16px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: #030712;
+      padding: 22px 7%;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    @media (max-width: 650px) {
+      .navbar {
+        height: auto;
+        padding: 15px 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .logo {
+        font-size: 24px;
+      }
+
+      .user-trigger span.name-text {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <a class="logo" href="dashboard.jsp">E-<span>Auction</span></a>
+
+    <div class="user-menu" id="userMenu">
+      <button class="user-trigger" onclick="toggleDropdown()">
+        <div class="user-avatar"><%= userName.trim().substring(0, 1).toUpperCase() %></div>
+        <span class="name-text"><%= userName %></span>
+        <span class="chevron">&#9660;</span>
+      </button>
+
+      <div class="dropdown">
+        <div class="dropdown-header">
+          <div class="name"><%= userName %></div>
+          <div class="label">Logged in</div>
+        </div>
+
+        <%-- Add more nav items here as the app grows --%>
+
+        <a class="dropdown-item logout" href="LogoutServlet">&#x2192; Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="welcome">Welcome back, <span><%= userName %></span>!</div>
+    <p class="subtitle">Your dashboard is ready. More features coming soon.</p>
+  </main>
+
+  <footer>© 2026 E-Auction. All Rights Reserved.</footer>
+
+  <script>
+    function toggleDropdown() {
+      document.getElementById("userMenu").classList.toggle("open");
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (e) {
+      const menu = document.getElementById("userMenu");
+      if (!menu.contains(e.target)) {
+        menu.classList.remove("open");
+      }
+    });
+  </script>
+
+</body>
+</html>

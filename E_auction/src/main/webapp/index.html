@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Auction</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: #101827;
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .navbar {
+        height: 84px;
+        width: 100%;
+        background: #101827;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 7%;
+        border-top: 3px solid #f59e0b;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .logo {
+        font-size: 30px;
+        font-weight: bold;
+        color: white;
+        letter-spacing: -1px;
+        text-decoration: none;
+      }
+
+      .logo span {
+        color: #f59e0b;
+      }
+
+      .nav-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btn {
+        padding: 11px 20px;
+        border-radius: 6px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .login-btn {
+        background: transparent;
+        color: white;
+        border: 1px solid #f59e0b;
+      }
+
+      .login-btn:hover {
+        background: #f59e0b;
+        color: #111827;
+      }
+
+      .signup-btn {
+        background: #f59e0b;
+        color: #111827;
+        border: 1px solid #f59e0b;
+      }
+
+      .signup-btn:hover {
+        background: #d97706;
+        color: white;
+      }
+
+      .register-btn {
+        background: #f59e0b;
+        color: #111827;
+        border: none;
+        padding: 15px 28px;
+        border-radius: 7px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .register-btn:hover {
+        background: #d97706;
+        color: white;
+      }
+
+      .hero {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 60px 7%;
+        background:
+          radial-gradient(
+            circle at 80% 50%,
+            rgba(245, 158, 11, 0.08),
+            transparent 35%
+          ),
+          #101827;
+      }
+
+      .hero-content {
+        max-width: 850px;
+      }
+
+      .hero-title {
+        font-size: 62px;
+        line-height: 1.1;
+        font-weight: 700;
+        margin-bottom: 28px;
+      }
+
+      .orange-text {
+        color: #f59e0b;
+      }
+
+      .hero-description {
+        max-width: 780px;
+        font-size: 19px;
+        line-height: 1.8;
+        color: #e5e7eb;
+        margin-bottom: 35px;
+      }
+
+      footer {
+        background: #030712;
+        padding: 25px 7%;
+        text-align: center;
+        color: #9ca3af;
+        font-size: 14px;
+      }
+
+      @media (max-width: 650px) {
+        .navbar {
+          height: auto;
+          padding: 15px 20px;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .logo {
+          font-size: 24px;
+        }
+
+        .hero-title {
+          font-size: 42px;
+        }
+
+        .hero-description {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="navbar">
+      <a class="logo" href="index.html">E-<span>Auction</span></a>
+      <div class="nav-buttons">
+        <a class="btn login-btn" href="signin.html">Login</a>
+        <a class="btn signup-btn" href="signup.html">Sign Up</a>
+      </div>
+    </header>
+
+    <main class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Bid Smart. <span class="orange-text">Win Big.</span>
+        </h1>
+        <p class="hero-description">
+          Welcome to E-Auction, a secure and transparent online auction platform
+          where buyers and sellers connect to discover, bid, and win amazing
+          products.
+        </p>
+        <a class="register-btn" href="signup.html">Register Now</a>
+      </div>
+    </main>
+
+    <footer>© 2026 E-Auction. All Rights Reserved.</footer>
+  </body>
+</html>

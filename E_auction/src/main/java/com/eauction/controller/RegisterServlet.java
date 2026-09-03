@@ -42,20 +42,16 @@ public class RegisterServlet extends HttpServlet {
         // 3. Delegate database save operation to UserDAO
         UserDao userDAO = new UserDao();
         boolean isSuccess = userDAO.insertUser(user);
-        PrintWriter out = response.getWriter();
 
-        // 4. Redirect based on query execution
-//        if (isSuccess) {
-//            response.sendRedirect("login.html?status=registered");
-//        } else {
-//            response.sendRedirect("register.html?error=failed");
-//        }
+
+
+       
         if (isSuccess) {
-            out.println("<h2 style='color: green; text-align: center; margin-top: 50px;'>Register Success!</h2>");
-            out.println("<p style='text-align: center;'><a href='index.html'>Click here to login</a></p>");
+            // Redirect to login page with a success query parameter
+            response.sendRedirect("login.html?status=registered");
         } else {
-            out.println("<h2 style='color: red; text-align: center; margin-top: 50px;'>Registration Failed!</h2>");
-            out.println("<p style='text-align: center;'><a href='index.html'>Try Again</a></p>");
+            // Redirect back to registration page with an error query parameter
+            response.sendRedirect("register.html?error=failed");
         }
     }
 }

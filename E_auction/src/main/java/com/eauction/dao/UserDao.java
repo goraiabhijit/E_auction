@@ -39,8 +39,7 @@ public class UserDao {
     }
     
     // 2. Validate User (Login Flow)
-    public boolean validateUser(String email, String password) {
-        // Fixed: changed 'email_id' to 'email' to match your Registration table primary key
+    public User validateUser(String email, String password) {
         String sql = "SELECT * FROM Registration WHERE email = ? AND password = ?";
         
         try (Connection conn = getConnection();
@@ -50,12 +49,21 @@ public class UserDao {
             ps.setString(2, password);
 
             try (ResultSet rs = ps.executeQuery()) {
-                return rs.next(); // Returns true if credentials match
+                if (rs.next()) {
+                    User user = new User();
+                    user.setName(rs.getString("name"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                    user.setMobile(rs.getString("mobile"));
+                    user.setAddress(rs.getString("address"));
+                    user.setGender(rs.getString("gender"));
+                    return user; // Returns User object
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return null; // Returns null if authentication fails
     }
 }

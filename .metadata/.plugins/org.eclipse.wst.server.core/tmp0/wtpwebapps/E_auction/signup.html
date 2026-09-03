@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up – E-Auction</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: #101827;
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ── Navbar ── */
+      .navbar {
+        height: 84px;
+        width: 100%;
+        background: #101827;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 7%;
+        border-top: 3px solid #f59e0b;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .logo {
+        font-size: 30px;
+        font-weight: bold;
+        color: white;
+        letter-spacing: -1px;
+        text-decoration: none;
+      }
+
+      .logo span {
+        color: #f59e0b;
+      }
+
+      .nav-link {
+        font-size: 14px;
+        color: #9ca3af;
+      }
+
+      .nav-link a {
+        color: #f59e0b;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .nav-link a:hover {
+        text-decoration: underline;
+      }
+
+      /* ── Page layout ── */
+      .page {
+        flex: 1;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 40px 20px;
+        background:
+          radial-gradient(
+            circle at 80% 30%,
+            rgba(245, 158, 11, 0.07),
+            transparent 35%
+          ),
+          #101827;
+      }
+
+      /* ── Card ── */
+      .card {
+        background: white;
+        color: #111827;
+        width: 100%;
+        max-width: 520px;
+        padding: 36px 32px;
+        border-radius: 12px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.45);
+        animation: cardIn 0.25s ease;
+      }
+
+      @keyframes cardIn {
+        from { transform: translateY(20px); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+      }
+
+      .card h2 {
+        font-size: 26px;
+        margin-bottom: 10px;
+        color: #111827;
+      }
+
+      .card h2 span {
+        color: #f59e0b;
+      }
+
+      .section-heading {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #f59e0b;
+        font-weight: bold;
+        margin: 18px 0 10px;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 4px;
+      }
+
+      /* ── Form ── */
+      .form-group {
+        margin-bottom: 12px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: bold;
+        font-size: 13px;
+        color: #334155;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 9px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        border-color: #f59e0b;
+        box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15);
+      }
+
+      .error-message {
+        color: #dc2626;
+        font-size: 12px;
+        margin-top: 4px;
+        display: none;
+      }
+
+      .input-error {
+        border: 1px solid #dc2626 !important;
+      }
+
+      .input-success {
+        border: 1px solid #16a34a !important;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        background: #f59e0b;
+        color: #111827;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      .submit-btn:hover {
+        background: #d97706;
+        color: white;
+      }
+
+      .card-footer {
+        margin-top: 18px;
+        text-align: center;
+        font-size: 14px;
+        color: #64748b;
+      }
+
+      .card-footer a {
+        color: #f59e0b;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .card-footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* ── Footer ── */
+      footer {
+        background: #030712;
+        padding: 22px 7%;
+        text-align: center;
+        color: #9ca3af;
+        font-size: 14px;
+      }
+
+      @media (max-width: 560px) {
+        .navbar {
+          height: auto;
+          padding: 15px 20px;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .logo {
+          font-size: 24px;
+        }
+
+        .card {
+          padding: 26px 18px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="navbar">
+      <a class="logo" href="index.html">E-<span>Auction</span></a>
+      <span class="nav-link">
+        Already have an account? <a href="signin.html">Sign In</a>
+      </span>
+    </header>
+
+    <main class="page">
+      <div class="card">
+        <h2>Create <span>Account</span></h2>
+
+        <form action="RegisterServlet" method="POST" id="signupForm" novalidate>
+
+          <div class="section-heading">Personal Details</div>
+
+          <div class="form-group">
+            <label for="signupName">Name</label>
+            <input
+              type="text"
+              id="signupName"
+              name="name"
+              placeholder="Enter full name"
+              autocomplete="name"
+            />
+            <div class="error-message" id="signupNameError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="signupEmail">Email ID</label>
+            <input
+              type="email"
+              id="signupEmail"
+              name="email"
+              placeholder="Enter email"
+              autocomplete="email"
+            />
+            <div class="error-message" id="signupEmailError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <input
+              type="password"
+              id="signupPassword"
+              name="password"
+              placeholder="Create password"
+              autocomplete="new-password"
+            />
+            <div class="error-message" id="signupPasswordError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Re-enter password"
+              autocomplete="new-password"
+            />
+            <div class="error-message" id="confirmPasswordError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="signupPhone">Phone Number</label>
+            <input
+              type="tel"
+              id="signupPhone"
+              name="mobile"
+              placeholder="Enter 10 digit phone number"
+              maxlength="10"
+              inputmode="numeric"
+              autocomplete="tel"
+            />
+            <div class="error-message" id="signupPhoneError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="signupAddress">Address</label>
+            <textarea
+              id="signupAddress"
+              name="address"
+              rows="2"
+              placeholder="Enter address"
+              autocomplete="street-address"
+            ></textarea>
+            <div class="error-message" id="signupAddressError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="signupGender">Gender</label>
+            <select id="signupGender" name="gender">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="error-message" id="signupGenderError"></div>
+          </div>
+
+          <div class="section-heading">Bank Details</div>
+
+          <div class="form-group">
+            <label for="bankAccountHolder">Account Holder Name</label>
+            <input
+              type="text"
+              id="bankAccountHolder"
+              name="account_holder_name"
+              placeholder="Enter account holder name"
+            />
+            <div class="error-message" id="bankAccountHolderError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="bankName">Bank Name</label>
+            <input
+              type="text"
+              id="bankName"
+              name="bank_name"
+              placeholder="Enter bank name"
+            />
+            <div class="error-message" id="bankNameError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="bankAccNumber">Account Number</label>
+            <input
+              type="text"
+              id="bankAccNumber"
+              name="account_number"
+              placeholder="Enter account number"
+              inputmode="numeric"
+            />
+            <div class="error-message" id="bankAccNumberError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="bankIFSC">IFSC Code</label>
+            <input
+              type="text"
+              id="bankIFSC"
+              name="ifsc_code"
+              placeholder="Enter IFSC code"
+              maxlength="11"
+            />
+            <div class="error-message" id="bankIFSCError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="bankBranch">Branch</label>
+            <input
+              type="text"
+              id="bankBranch"
+              name="branch"
+              placeholder="Enter branch name"
+            />
+            <div class="error-message" id="bankBranchError"></div>
+          </div>
+
+          <button type="submit" class="submit-btn">Sign Up</button>
+        </form>
+
+        <div class="card-footer">
+          Already have an account? <a href="signin.html">Sign In</a>
+        </div>
+      </div>
+    </main>
+
+    <footer>© 2026 E-Auction. All Rights Reserved.</footer>
+
+    <script>
+      /* ── Validation helpers ── */
+      function error(input, message) {
+        if (!input) return false;
+        input.classList.remove("input-success");
+        input.classList.add("input-error");
+
+        const e = document.getElementById(input.id + "Error");
+        if (e) {
+          e.textContent = message;
+          e.style.display = "block";
+        }
+
+        return false;
+      }
+
+      function success(input) {
+        if (!input) return true;
+        input.classList.remove("input-error");
+        input.classList.add("input-success");
+
+        const e = document.getElementById(input.id + "Error");
+        if (e) {
+          e.textContent = "";
+          e.style.display = "none";
+        }
+
+        return true;
+      }
+
+      function validateName(input) {
+        if (!input || input.value.trim() === "") {
+          return error(input, "Name cannot be blank.");
+        }
+        return success(input);
+      }
+
+      function validateEmail(input) {
+        if (!input || input.value.trim() === "") {
+          return error(input, "Email ID cannot be blank.");
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) {
+          return error(input, "Enter a valid email ID.");
+        }
+        return success(input);
+      }
+
+      function validatePassword(input) {
+        if (!input || input.value === "") {
+          return error(input, "Password cannot be blank.");
+        }
+        return success(input);
+      }
+
+      function validateConfirmPassword(input) {
+        const passInput = document.getElementById("signupPassword");
+        const password = passInput ? passInput.value : "";
+
+        if (!input || input.value === "") {
+          return error(input, "Confirm password cannot be blank.");
+        }
+        if (input.value !== password) {
+          return error(input, "Passwords do not match.");
+        }
+        return success(input);
+      }
+
+      function validatePhone(input) {
+        if (!input) return false;
+        input.value = input.value.replace(/[^0-9]/g, "");
+
+        if (input.value === "") {
+          return error(input, "Mobile number cannot be blank.");
+        }
+        if (input.value.length !== 10) {
+          return error(input, "Mobile number must be exactly 10 digits.");
+        }
+        return success(input);
+      }
+
+      function validateBlank(input, fieldName) {
+        if (!input || input.value.trim() === "") {
+          return error(input, fieldName + " cannot be blank.");
+        }
+        return success(input);
+      }
+
+      /* ── Live listeners ── */
+      const signupName = document.getElementById("signupName");
+      if (signupName) signupName.addEventListener("input", function () { validateName(this); });
+
+      const signupEmail = document.getElementById("signupEmail");
+      if (signupEmail) signupEmail.addEventListener("input", function () { validateEmail(this); });
+
+      const signupPassword = document.getElementById("signupPassword");
+      if (signupPassword) {
+        signupPassword.addEventListener("input", function () {
+          validatePassword(this);
+          const confirm = document.getElementById("confirmPassword");
+          if (confirm && confirm.value !== "") validateConfirmPassword(confirm);
+        });
+      }
+
+      const confirmPassword = document.getElementById("confirmPassword");
+      if (confirmPassword) confirmPassword.addEventListener("input", function () { validateConfirmPassword(this); });
+
+      const signupPhone = document.getElementById("signupPhone");
+      if (signupPhone) signupPhone.addEventListener("input", function () { validatePhone(this); });
+
+      const signupAddress = document.getElementById("signupAddress");
+      if (signupAddress) signupAddress.addEventListener("input", function () { validateBlank(this, "Address"); });
+
+      const signupGender = document.getElementById("signupGender");
+      if (signupGender) {
+        signupGender.addEventListener("change", function () {
+          if (this.value === "") error(this, "Please select your gender.");
+          else success(this);
+        });
+      }
+
+      /* ── Submit handler ── */
+      const signupForm = document.getElementById("signupForm");
+      if (signupForm) {
+        signupForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const name     = document.getElementById("signupName");
+          const email    = document.getElementById("signupEmail");
+          const password = document.getElementById("signupPassword");
+          const confirm  = document.getElementById("confirmPassword");
+          const phone    = document.getElementById("signupPhone");
+          const address  = document.getElementById("signupAddress");
+          const gender   = document.getElementById("signupGender");
+
+          validateName(name);
+          validateEmail(email);
+          validatePassword(password);
+          validateConfirmPassword(confirm);
+          validatePhone(phone);
+          validateBlank(address, "Address");
+
+          if (gender && gender.value === "") error(gender, "Please select your gender.");
+          else success(gender);
+
+          const firstError = this.querySelector(".input-error");
+          if (firstError) { firstError.focus(); return; }
+
+          this.submit();
+        });
+
+        /* ── Keyboard navigation ── */
+        const fields = Array.from(signupForm.querySelectorAll("input, select, textarea"));
+        fields.forEach(function (field, index) {
+          field.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" && field.tagName !== "TEXTAREA") {
+              event.preventDefault();
+              if (field.classList.contains("input-error")) { field.focus(); return; }
+              if (index < fields.length - 1) fields[index + 1].focus();
+            }
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

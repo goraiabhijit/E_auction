@@ -1,10 +1,15 @@
 package com.eauction.controller;
+import com.eauction.dao.UserDao;
+import com.eauction.model.User;
 
 import jakarta.servlet.ServletException;
+
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 /**
@@ -26,7 +31,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.sendRedirect("signin.html");
 	}
 
 	/**
@@ -34,7 +39,24 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        UserDao userDao = new UserDao();
+        User loggedInUser = userDao.validateUser(email, password);
+
+        if (loggedInUser != null) {
+            // Create HTTP Session and store user object & name
+            HttpSession session = request.getSession();
+            session.setAttribute("currentUser", loggedInUser);
+            session.setAttribute("userName", loggedInUser.getName());
+
+            // Redirect to dashboard
+            response.sendRedirect("dashboard.jsp");
+        } else {
+            // Invalid credentials -> redirect back with error parameter
+            response.sendRedirect("signin.html?error=invalid");
+        }
 	}
 
 }

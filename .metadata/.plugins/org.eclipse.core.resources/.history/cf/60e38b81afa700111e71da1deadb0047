@@ -1,0 +1,52 @@
+package com.eauction.controller;
+
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import com.eauction.dao.UserDao;
+import com.eauction.model.User;
+
+/**
+ * Servlet implementation class RegisterServlet
+ */
+@WebServlet("/RegisterServlet")
+public class RegisterServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    public RegisterServlet() {
+        super();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.sendRedirect("signup.html");
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 1. Fetch form data — names match DB columns exactly (all lowercase)
+        String name     = request.getParameter("name");
+        String email    = request.getParameter("email");
+        String password = request.getParameter("password");
+        String mobile   = request.getParameter("mobile");
+        String address  = request.getParameter("address");
+        String gender   = request.getParameter("gender");
+
+        // 2. Wrap in User POJO
+        User user = new User(name, email, password, mobile, address, gender);
+
+        // 3. Persist via DAO
+        UserDao userDAO = new UserDao();
+        boolean isSuccess = userDAO.insertUser(user);
+
+        // 4. Redirect based on result
+        if (isSuccess) {
+            response.sendRedirect("signin.html?status=registered");
+        } else {
+            response.sendRedirect("signup.html?error=failed");
+        }
+    }
+}
