@@ -11,7 +11,9 @@ public class User implements Serializable {
     private String mobile;
     private String address;
     private String gender;
+    private String role;
 
+    
     // Default constructor (required for standard JavaBean practices)
     public User() {
     }
@@ -24,9 +26,10 @@ public class User implements Serializable {
         this.mobile = mobile;
         this.address = address;
         this.gender = gender;
+      
     }
 
-    // Getters and Setters
+    
     public String getName() { 
         return name; 
     }

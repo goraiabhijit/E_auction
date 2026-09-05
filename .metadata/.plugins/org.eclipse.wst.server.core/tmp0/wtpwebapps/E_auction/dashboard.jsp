@@ -1,14 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.eauction.model.Item" %>
 <%@ page import="com.eauction.model.User" %>
 <%
-    // 1. Fetch the user object set in LoginServlet
     User loggedInUser = (User) session.getAttribute("currentUser");
 
-    // 2. Guard Clause: Redirect unauthenticated users back to login
     if (loggedInUser == null) {
         response.sendRedirect("signin.html");
         return;
     }
+
+    List<Item> itemList = (List<Item>) request.getAttribute("itemList");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +53,6 @@
         }
         .logo span { color: #f59e0b; }
 
-        /* ── User dropdown ── */
         .user-menu { position: relative; }
 
         .user-trigger {
@@ -130,14 +131,63 @@
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn-add-item {
+            background-color: #f59e0b;
+            color: #111827;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
         }
 
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Added image banner styling */
+        .item-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .item-body {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .item-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #059669;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <a class="logo" href="dashboard.jsp">E-<span>Auction</span></a>
+        <a class="logo" href="DashboardServlet">E-<span>Auction</span></a>
+
+        <a href="addItem.jsp" class="btn-add-item">+ Add New Item</a>
 
         <div class="user-menu" id="userMenu">
             <button class="user-trigger" onclick="toggleDropdown()">
@@ -157,8 +207,39 @@
 
     <main>
         <section class="welcome-card">
-            <h2>Live Auctions</h2>
-            <p style="margin-top: 0.5rem; color: #64748b;">No active auctions listed yet. Item management modules can be integrated here next.</p>
+            <div>
+                <h2>Live Auctions</h2>
+                <p style="margin-top: 0.5rem; color: #64748b;">Active items fetched directly from Oracle DB.</p>
+            </div>
+        </section>
+
+        <section class="items-grid">
+        <%
+            if (itemList != null && !itemList.isEmpty()) {
+                for (Item item : itemList) {
+        %>
+            <div class="item-card">
+                <!-- Render image tag fetched from item_picture column -->
+                <img class="item-image" 
+                     src="<%= (item.getItemPicture() != null && !item.getItemPicture().trim().isEmpty()) ? item.getItemPicture() : "images/placeholder.png" %>" 
+                     alt="<%= item.getItemName() %>"
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/280x180?text=No+Image';" />
+
+                <div class="item-body">
+                    <h3><%= item.getItemName() %></h3>
+                    <p style="color: #64748b;"><%= item.getItemDescription() %></p>
+                    <div class="item-price">₹<%= item.getStartingPrice() %></div>
+                    <small style="color: #94a3b8;">Seller: <%= item.getSellerEmail() %></small>
+                </div>
+            </div>
+        <%
+                }
+            } else {
+        %>
+            <p style="color: #64748b;">No active auctions listed yet.</p>
+        <%
+            }
+        %>
         </section>
     </main>
 

@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("userName", loggedInUser.getName());
 
             // Redirect to dashboard
-            response.sendRedirect("dashboard.jsp");
+            response.sendRedirect("DashboardServlet");
         } else {
             // Invalid credentials -> redirect back with error parameter
             response.sendRedirect("signin.html?error=invalid");

@@ -1,0 +1,99 @@
+package com.eauction.controller;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+
+import com.eauction.dao.ItemDao;
+import com.eauction.model.Item;
+import com.eauction.model.User;
+
+/**
+ * Servlet implementation class PutItemServlet
+ */
+@WebServlet("/PutItemServlet")
+@MultipartConfig
+public class PutItemServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public PutItemServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		// 1. Fetch logged-in user from session
+        HttpSession session = request.getSession(false);
+        User loggedInUser = (session != null) ? (User) session.getAttribute("currentUser") : null;
+
+        if (loggedInUser == null) {
+            response.sendRedirect("signin.html");
+            return;
+        }
+
+        // 2. Fetch parameters matching exact form names
+        String itemName = request.getParameter("itemName");
+        String itemDescription = request.getParameter("itemDescription");
+        double startingPrice = Double.parseDouble(request.getParameter("startingPrice"));
+        String sellerEmail = loggedInUser.getEmail();
+
+        // 3. Process uploaded image file matching input name "itemPicture"
+        Part filePart = request.getPart("itemPicture");
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        
+
+        String uploadPath = getServletContext().getRealPath("").split("\\.metadata")[0] 
+                + "E_auction" + File.separator + "src" + File.separator + "main" 
+                + File.separator + "webapp" + File.separator + "uploads";
+
+        File sourceDir = new File(uploadPath);
+        if (!sourceDir.exists()) {
+            sourceDir.mkdirs();
+        }
+        filePart.write(uploadPath + File.separator + fileName);
+
+      
+        String dbPicturePath = "uploads/" + fileName;
+
+        // 4. Populate Item model object
+        Item item = new Item();
+        item.setItemName(itemName);
+        item.setItemDescription(itemDescription);
+        item.setStartingPrice(startingPrice);
+        item.setItemPicture(dbPicturePath);
+        item.setSellerEmail(sellerEmail);
+
+        // 5. Call DAO method putItem
+        ItemDao itemDao = new ItemDao();
+        if (itemDao.putItem(item)) {
+            response.sendRedirect("DashboardServlet");
+        } else {
+            response.sendRedirect("addItem.jsp?error=insert_failed");
+        }
+	}
+
+}

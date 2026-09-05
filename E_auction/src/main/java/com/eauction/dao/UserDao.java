@@ -15,6 +15,27 @@ public class UserDao {
         return DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "e_auction", "eauction");
     }
 
+    
+    public boolean emailExists(String email) {
+        boolean exists = false;
+        String sql = "SELECT 1 FROM Registration WHERE email = ?";
+        
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    exists = true; // Email found in database
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return exists;
+    }
+    
+    
     // 1. Insert User (Registration Flow)
     public boolean insertUser(User user) {
         String sql = "INSERT INTO Registration (name, email, password, mobile, address, gender) VALUES (?, ?, ?, ?, ?, ?)";

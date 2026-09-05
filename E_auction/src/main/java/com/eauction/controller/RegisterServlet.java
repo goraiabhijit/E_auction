@@ -36,11 +36,20 @@ public class RegisterServlet extends HttpServlet {
         String address = request.getParameter("address");
         String gender = request.getParameter("gender");
 
-        // 2. Wrap form values in User POJO
-        User user = new User(name, email, password, mobile, address, gender);
 
         // 3. Delegate database save operation to UserDAO
         UserDao userDAO = new UserDao();
+
+        //check if email exist
+        if (userDAO.emailExists(email)) {
+            // Email exists: Redirect back to registration with specific error
+            response.sendRedirect("signup.html?error=exists");
+            return; // Stop further execution
+        }
+        
+        
+        // 2. Wrap form values in User POJO
+        User user = new User(name, email, password, mobile, address, gender);
         boolean isSuccess = userDAO.insertUser(user);
 
 
@@ -48,10 +57,10 @@ public class RegisterServlet extends HttpServlet {
        
         if (isSuccess) {
             // Redirect to login page with a success query parameter
-            response.sendRedirect("login.html?status=registered");
+            response.sendRedirect("signin.html?status=registered");
         } else {
             // Redirect back to registration page with an error query parameter
-            response.sendRedirect("register.html?error=failed");
+            response.sendRedirect("signup.html?error=failed");
         }
     }
 }

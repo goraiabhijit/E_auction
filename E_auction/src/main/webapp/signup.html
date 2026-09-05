@@ -402,6 +402,9 @@
 
     <script>
       /* ── Validation helpers ── */
+      
+      
+      
       function error(input, message) {
         if (!input) return false;
         input.classList.remove("input-success");
@@ -550,6 +553,19 @@
           this.submit();
         });
 
+        window.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorParam = urlParams.get("error");
+
+            if (errorParam === "exists") {
+              const emailInput = document.getElementById("signupEmail");
+              // Reuses your existing error() function to highlight the input in red!
+              error(emailInput, "An account with this email already exists!");
+            } else if (errorParam === "failed") {
+              alert("Registration failed due to a server error. Please try again.");
+            }
+          });
+        
         /* ── Keyboard navigation ── */
         const fields = Array.from(signupForm.querySelectorAll("input, select, textarea"));
         fields.forEach(function (field, index) {
