@@ -11,6 +11,7 @@ public class Item implements Serializable {
     private String itemDescription;
     private double startingPrice;
     private Timestamp auctionStartTime;
+    private Timestamp auctionEndTime;
     private String itemPicture;
     private String sellerEmail;
 
@@ -19,71 +20,42 @@ public class Item implements Serializable {
     }
 
     // Parameterized Constructor
-    public Item(int itemId, String itemName, String itemDescription, double startingPrice, 
-                Timestamp auctionStartTime, String itemPicture, String sellerEmail) {
-        this.itemId = itemId;
-        this.itemName = itemName;
-        this.itemDescription = itemDescription;
-        this.startingPrice = startingPrice;
+    public Item(int itemId, String itemName, String itemDescription, double startingPrice,
+                Timestamp auctionStartTime, Timestamp auctionEndTime,
+                String itemPicture, String sellerEmail) {
+        this.itemId           = itemId;
+        this.itemName         = itemName;
+        this.itemDescription  = itemDescription;
+        this.startingPrice    = startingPrice;
         this.auctionStartTime = auctionStartTime;
-        this.itemPicture = itemPicture;
-        this.sellerEmail = sellerEmail;
+        this.auctionEndTime   = auctionEndTime;
+        this.itemPicture      = itemPicture;
+        this.sellerEmail      = sellerEmail;
     }
 
     // Getters and Setters
-    public int getItemId() {
-        return itemId;
-    }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
+    public int getItemId() { return itemId; }
+    public void setItemId(int itemId) { this.itemId = itemId; }
 
-    public String getItemName() {
-        return itemName;
-    }
+    public String getItemName() { return itemName; }
+    public void setItemName(String itemName) { this.itemName = itemName; }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
+    public String getItemDescription() { return itemDescription; }
+    public void setItemDescription(String itemDescription) { this.itemDescription = itemDescription; }
 
-    public String getItemDescription() {
-        return itemDescription;
-    }
+    public double getStartingPrice() { return startingPrice; }
+    public void setStartingPrice(double startingPrice) { this.startingPrice = startingPrice; }
 
-    public void setItemDescription(String itemDescription) {
-        this.itemDescription = itemDescription;
-    }
+    public Timestamp getAuctionStartTime() { return auctionStartTime; }
+    public void setAuctionStartTime(Timestamp auctionStartTime) { this.auctionStartTime = auctionStartTime; }
 
-    public double getStartingPrice() {
-        return startingPrice;
-    }
+    public Timestamp getAuctionEndTime() { return auctionEndTime; }
+    public void setAuctionEndTime(Timestamp auctionEndTime) { this.auctionEndTime = auctionEndTime; }
 
-    public void setStartingPrice(double startingPrice) {
-        this.startingPrice = startingPrice;
-    }
+    public String getItemPicture() { return itemPicture; }
+    public void setItemPicture(String itemPicture) { this.itemPicture = itemPicture; }
 
-    public Timestamp getAuctionStartTime() {
-        return auctionStartTime;
-    }
-
-    public void setAuctionStartTime(Timestamp auctionStartTime) {
-        this.auctionStartTime = auctionStartTime;
-    }
-
-    public String getItemPicture() {
-        return itemPicture;
-    }
-
-    public void setItemPicture(String itemPicture) {
-        this.itemPicture = itemPicture;
-    }
-
-    public String getSellerEmail() {
-        return sellerEmail;
-    }
-
-    public void setSellerEmail(String sellerEmail) {
-        this.sellerEmail = sellerEmail;
-    }
+    public String getSellerEmail() { return sellerEmail; }
+    public void setSellerEmail(String sellerEmail) { this.sellerEmail = sellerEmail; }
 }

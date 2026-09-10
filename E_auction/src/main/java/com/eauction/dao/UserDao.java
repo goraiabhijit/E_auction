@@ -78,6 +78,7 @@ public class UserDao {
                     user.setMobile(rs.getString("mobile"));
                     user.setAddress(rs.getString("address"));
                     user.setGender(rs.getString("gender"));
+                    user.setRole(rs.getString("role"));
                     return user; // Returns User object
                 }
             }

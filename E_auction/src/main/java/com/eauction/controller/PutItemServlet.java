@@ -56,14 +56,34 @@ public class PutItemServlet extends HttpServlet {
         }
 
         // 2. Fetch parameters matching exact form names
-        String itemName = request.getParameter("itemName");
+        String itemName        = request.getParameter("itemName");
         String itemDescription = request.getParameter("itemDescription");
-        double startingPrice = Double.parseDouble(request.getParameter("startingPrice"));
-        String sellerEmail = loggedInUser.getEmail();
+        double startingPrice   = Double.parseDouble(request.getParameter("startingPrice"));
+        String sellerEmail     = loggedInUser.getEmail();
+
+        // Parse datetime-local values into Timestamps
+        String startTimeStr = request.getParameter("auctionStartTime"); // format: 2026-09-03T10:30
+        String endTimeStr   = request.getParameter("auctionEndTime");
+
+        java.sql.Timestamp auctionStartTime = java.sql.Timestamp.valueOf(startTimeStr.replace("T", " ") + ":00");
+        java.sql.Timestamp auctionEndTime   = java.sql.Timestamp.valueOf(endTimeStr.replace("T", " ") + ":00");
 
      // 1. Get file part and file name
         Part filePart = request.getPart("itemPicture");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        
+        // Sanitize filename: remove special chars, keep only alphanumeric, dots, dashes, underscores
+        String fileName = originalFileName.replaceAll("[^a-zA-Z0-9._-]", "_");
+        
+        // If filename becomes empty or starts with dot, generate a timestamp-based name
+        if (fileName.isEmpty() || fileName.startsWith(".")) {
+            String extension = "";
+            int dotIndex = originalFileName.lastIndexOf('.');
+            if (dotIndex > 0) {
+                extension = originalFileName.substring(dotIndex);
+            }
+            fileName = "item_" + System.currentTimeMillis() + extension;
+        }
 
         // 2. Deployment Upload Path (Where Tomcat serves files live)
         String deployUploadPath = getServletContext().getRealPath("/uploads");
@@ -107,6 +127,8 @@ public class PutItemServlet extends HttpServlet {
         item.setStartingPrice(startingPrice);
         item.setItemPicture(dbPicturePath);
         item.setSellerEmail(sellerEmail);
+        item.setAuctionStartTime(auctionStartTime);
+        item.setAuctionEndTime(auctionEndTime);
 
         // 5. Call DAO method putItem
         ItemDao itemDao = new ItemDao();

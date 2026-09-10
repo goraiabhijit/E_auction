@@ -71,4 +71,11 @@ public class User implements Serializable {
     public void setGender(String gender) { 
         this.gender = gender; 
     }
+
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

@@ -18,7 +18,7 @@
         h2 { margin-bottom: 1.5rem; color: #101827; }
         .form-group { margin-bottom: 1.2rem; }
         label { display: block; font-weight: bold; margin-bottom: 0.4rem; color: #374151; }
-        input[type="text"], input[type="number"], textarea, input[type="file"] { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; }
+        input[type="text"], input[type="number"], input[type="datetime-local"], textarea, input[type="file"] { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
         button { width: 100%; padding: 12px; background: #f59e0b; border: none; border-radius: 6px; font-weight: bold; color: #111827; cursor: pointer; font-size: 1rem; }
         button:hover { background: #d97706; }
         .back-link { display: inline-block; margin-top: 1rem; color: #4b5563; text-decoration: none; }
@@ -42,6 +42,16 @@
         <div class="form-group">
             <label for="startingPrice">Starting Price (₹)</label>
             <input type="number" id="startingPrice" name="startingPrice" step="1" min="1" required />
+        </div>
+
+        <div class="form-group">
+            <label for="auctionStartTime">Auction Start Time</label>
+            <input type="datetime-local" id="auctionStartTime" name="auctionStartTime" required />
+        </div>
+
+        <div class="form-group">
+            <label for="auctionEndTime">Auction End Time</label>
+            <input type="datetime-local" id="auctionEndTime" name="auctionEndTime" required />
         </div>
 
         <div class="form-group">

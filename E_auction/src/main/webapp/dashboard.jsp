@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.eauction.model.Item" %>
+<%@ page import="com.eauction.model.Bid" %>
 <%@ page import="com.eauction.model.User" %>
 <%
     User loggedInUser = (User) session.getAttribute("currentUser");
@@ -11,6 +12,8 @@
     }
 
     List<Item> itemList = (List<Item>) request.getAttribute("itemList");
+    List<Bid>  myBids   = (List<Bid>)  request.getAttribute("myBids");
+    List<Bid>  allBids  = (List<Bid>)  request.getAttribute("allBids");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -180,6 +183,69 @@
             font-weight: bold;
             color: #059669;
         }
+
+        .bid-btn {
+            display: block;
+            text-align: center;
+            background: #f59e0b;
+            color: #111827;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 9px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-top: 6px;
+            transition: background 0.2s;
+            width: 100%;
+        }
+        .bid-btn:hover { background: #d97706; color: white; }
+
+        /* ── Two column layout ── */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* ── Bid panels ── */
+        .bid-panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .bid-panel-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: bold;
+            font-size: 15px;
+            color: #111827;
+            background: #f8fafc;
+        }
+
+        .bid-panel-body {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .bid-row {
+            padding: 10px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .bid-row:last-child { border-bottom: none; }
+        .bid-row .bid-item  { font-weight: bold; color: #111827; }
+        .bid-row .bid-amt   { color: #059669; font-weight: bold; }
+        .bid-row .bid-time  { color: #94a3b8; font-size: 11px; display: block; margin-top: 2px; }
+        .bid-row .bid-user  { color: #6366f1; font-weight: bold; }
+
+        .no-bids { padding: 16px; font-size: 13px; color: #94a3b8; text-align: center; }
     </style>
 </head>
 <body>
@@ -199,6 +265,7 @@
                 <div class="dropdown-header">
                     <div class="name"><%= loggedInUser.getName() %></div>
                     <div class="email"><%= loggedInUser.getEmail() %></div>
+                    <div class="email">Role: <%= loggedInUser.getRole() %></div>
                 </div>
                 <a href="LogoutServlet">&#x2192; Logout</a>
             </div>
@@ -213,34 +280,98 @@
             </div>
         </section>
 
-        <section class="items-grid">
-        <%
-            if (itemList != null && !itemList.isEmpty()) {
-                for (Item item : itemList) {
-        %>
-            <div class="item-card">
-                <!-- Render image tag fetched from item_picture column -->
-                <img class="item-image" 
-                     src="<%= (item.getItemPicture() != null && !item.getItemPicture().trim().isEmpty()) ? item.getItemPicture() : "images/placeholder.png" %>" 
-                     alt="<%= item.getItemName() %>"
-                     onerror="this.onerror=null; this.src='https://via.placeholder.com/280x180?text=No+Image';" />
+        <div class="dashboard-layout">
 
-                <div class="item-body">
-                    <h3><%= item.getItemName() %></h3>
-                    <p style="color: #64748b;"><%= item.getItemDescription() %></p>
-                    <div class="item-price">₹<%= item.getStartingPrice() %></div>
-                    <small style="color: #94a3b8;">Seller: <%= item.getSellerEmail() %></small>
+            <!-- Left: item cards -->
+            <section class="items-grid">
+            <%
+                if (itemList != null && !itemList.isEmpty()) {
+                    for (Item item : itemList) {
+            %>
+                <div class="item-card">
+                    <img class="item-image" 
+                         src="<%= request.getContextPath() %>/<%= (item.getItemPicture() != null && !item.getItemPicture().trim().isEmpty()) ? item.getItemPicture() : "images/placeholder.png" %>" 
+                         alt="<%= item.getItemName() %>"
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/280x180?text=No+Image';" />
+
+                    <div class="item-body">
+                        <h3><%= item.getItemName() %></h3>
+                        <small style="color: #94a3b8;">ID: <%= item.getItemId() %></small>
+                        <p style="color: #64748b;"><%= item.getItemDescription() %></p>
+                        <div class="item-price">₹<%= item.getStartingPrice() %></div>
+                        <small style="color: #94a3b8;">Seller: <%= item.getSellerEmail() %></small>
+                        <a class="bid-btn" href="bidItem.jsp?itemId=<%= item.getItemId() %>&startingPrice=<%= item.getStartingPrice() %>&sellerEmail=<%= item.getSellerEmail() %>">Place Bid</a>
+                    </div>
                 </div>
-            </div>
-        <%
+            <%
+                    }
+                } else {
+            %>
+                <p style="color: #64748b;">No active auctions listed yet.</p>
+            <%
                 }
-            } else {
-        %>
-            <p style="color: #64748b;">No active auctions listed yet.</p>
-        <%
-            }
-        %>
-        </section>
+            %>
+            </section>
+
+            <!-- Right: bid panels -->
+            <aside>
+
+                <!-- My Bids -->
+                <div class="bid-panel">
+                    <div class="bid-panel-header">🏷 My Bids</div>
+                    <div class="bid-panel-body">
+                    <%
+                        if (myBids != null && !myBids.isEmpty()) {
+                            for (Bid bid : myBids) {
+                    %>
+                        <div class="bid-row">
+                            You bid on <span class="bid-item"><%= bid.getItemName() %></span>
+                            for <span class="bid-amt">₹<%= bid.getBidAmount() %></span>
+                            <span class="bid-time"><%= bid.getBidTime() %></span>
+                        </div>
+                    <%
+                            }
+                        } else {
+                    %>
+                        <div class="no-bids">You haven't placed any bids yet.</div>
+                    <%
+                        }
+                    %>
+                    </div>
+                </div>
+
+                <!-- All Bids -->
+                <div class="bid-panel">
+                    <div class="bid-panel-header">📋 All Bids</div>
+                    <div class="bid-panel-body">
+                    <%
+                        if (allBids != null && !allBids.isEmpty()) {
+                            for (Bid bid : allBids) {
+                                // Show "You" if the bidder is the current logged-in user
+                                String bidderDisplay = bid.getBidderEmail().equalsIgnoreCase(loggedInUser.getEmail()) 
+                                                       ? "You" 
+                                                       : bid.getBidderEmail();
+                    %>
+                        <div class="bid-row">
+                            <span class="bid-user"><%= bidderDisplay %></span>
+                            bid on <span class="bid-item"><%= bid.getItemName() %></span>
+                            for <span class="bid-amt">₹<%= bid.getBidAmount() %></span>
+                            <span class="bid-time"><%= bid.getBidTime() %></span>
+                        </div>
+                    <%
+                            }
+                        } else {
+                    %>
+                        <div class="no-bids">No bids placed yet.</div>
+                    <%
+                        }
+                    %>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
     </main>
 
     <script>

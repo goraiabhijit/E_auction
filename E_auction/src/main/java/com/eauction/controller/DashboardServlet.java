@@ -12,7 +12,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import com.eauction.dao.ItemDao;
+import com.eauction.dao.BidDao;
 import com.eauction.model.Item;
+import com.eauction.model.Bid;
+import com.eauction.model.User;
 
 @WebServlet("/DashboardServlet")
 public class DashboardServlet extends HttpServlet {
@@ -29,7 +32,7 @@ public class DashboardServlet extends HttpServlet {
         // 1. Session Guard Check
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("currentUser") == null) {
-            response.sendRedirect("login.html?error=unauthorized");
+            response.sendRedirect("signin.html");
             return;
         }
 
@@ -37,8 +40,16 @@ public class DashboardServlet extends HttpServlet {
         ItemDao itemDao = new ItemDao();
         List<Item> itemList = itemDao.getAllItems();
 
-        // 3. Attach the populated item list to the request scope
+        // 3. Fetch bids — user's own bids and all bids
+        User loggedInUser = (User) session.getAttribute("currentUser");
+        BidDao bidDao = new BidDao();
+        List<Bid> myBids  = bidDao.getBidsByUser(loggedInUser.getEmail());
+        List<Bid> allBids = bidDao.getAllBids();
+
+        // 4. Attach all lists to request scope
         request.setAttribute("itemList", itemList);
+        request.setAttribute("myBids",   myBids);
+        request.setAttribute("allBids",  allBids);
 
         // 4. Forward execution to dashboard.jsp
         RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
