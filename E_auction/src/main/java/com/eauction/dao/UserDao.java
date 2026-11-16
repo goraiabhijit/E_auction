@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.eauction.model.User;
 
@@ -78,7 +80,6 @@ public class UserDao {
                     user.setMobile(rs.getString("mobile"));
                     user.setAddress(rs.getString("address"));
                     user.setGender(rs.getString("gender"));
-                    user.setRole(rs.getString("role"));
                     return user; // Returns User object
                 }
             }
@@ -87,5 +88,31 @@ public class UserDao {
             e.printStackTrace();
         }
         return null; // Returns null if authentication fails
+    }
+
+    // 3. Get all registered users (Admin use)
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT name, email, mobile, address, gender FROM Registration ORDER BY name ASC";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                User user = new User();
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setMobile(rs.getString("mobile"));
+                user.setAddress(rs.getString("address"));
+                user.setGender(rs.getString("gender"));
+                users.add(user);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return users;
     }
 }

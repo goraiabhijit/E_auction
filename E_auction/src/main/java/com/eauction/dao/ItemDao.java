@@ -83,8 +83,67 @@ public class ItemDao {
         return itemList;
     }
 
-    // ── Step 2: putItem — include auction_start_time and auction_end_time ──
-    public boolean putItem(Item item) {
+    // ── Active items: auction_end_time > NOW ──
+    public List<Item> getActiveItems() {
+        List<Item> items = new ArrayList<>();
+        String sql = "SELECT item_id, item_name, item_description, starting_price, " +
+                     "auction_start_time, auction_end_time, item_picture, seller_email " +
+                     "FROM Item_Details WHERE auction_end_time > CURRENT_TIMESTAMP " +
+                     "ORDER BY auction_end_time ASC";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Item item = new Item();
+                item.setItemId(rs.getInt("item_id"));
+                item.setItemName(rs.getString("item_name"));
+                item.setItemDescription(rs.getString("item_description"));
+                item.setStartingPrice(rs.getDouble("starting_price"));
+                item.setAuctionStartTime(rs.getTimestamp("auction_start_time"));
+                item.setAuctionEndTime(rs.getTimestamp("auction_end_time"));
+                item.setItemPicture(rs.getString("item_picture"));
+                item.setSellerEmail(rs.getString("seller_email"));
+                items.add(item);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return items;
+    }
+
+    // ── Completed items: auction_end_time <= NOW ──
+    public List<Item> getCompletedItems() {
+        List<Item> items = new ArrayList<>();
+        String sql = "SELECT item_id, item_name, item_description, starting_price, " +
+                     "auction_start_time, auction_end_time, item_picture, seller_email " +
+                     "FROM Item_Details WHERE auction_end_time <= CURRENT_TIMESTAMP " +
+                     "ORDER BY auction_end_time DESC";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Item item = new Item();
+                item.setItemId(rs.getInt("item_id"));
+                item.setItemName(rs.getString("item_name"));
+                item.setItemDescription(rs.getString("item_description"));
+                item.setStartingPrice(rs.getDouble("starting_price"));
+                item.setAuctionStartTime(rs.getTimestamp("auction_start_time"));
+                item.setAuctionEndTime(rs.getTimestamp("auction_end_time"));
+                item.setItemPicture(rs.getString("item_picture"));
+                item.setSellerEmail(rs.getString("seller_email"));
+                items.add(item);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return items;
+    }
+
+    // ── Step 2: putItem — include auction_start_time and auction_end_time ──    public boolean putItem(Item item) {
         String sql = "INSERT INTO Item_Details " +
                      "(item_id, item_name, item_description, item_picture, starting_price, " +
                      "auction_start_time, auction_end_time, seller_email) " +

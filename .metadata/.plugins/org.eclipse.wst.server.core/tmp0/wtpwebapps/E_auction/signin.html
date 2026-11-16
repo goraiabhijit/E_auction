@@ -57,6 +57,40 @@
     .card h2 { font-size: 24px; margin-bottom: 24px; }
     .card h2 span { color: #f59e0b; }
 
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      font-size: 14px;
+      font-weight: bold;
+      color: #94a3b8;
+      cursor: pointer;
+      margin-bottom: -2px;
+      transition: color 0.2s, border-color 0.2s;
+      border-radius: 0;
+      margin-top: 0;
+      width: auto;
+    }
+
+    .tab-btn:hover { background: none; color: #374151; }
+
+    .tab-btn.active {
+      color: #f59e0b;
+      border-bottom-color: #f59e0b;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
     label {
       display: block;
       font-size: 13px;
@@ -120,18 +154,41 @@
 
       <div id="banner" class="banner"></div>
 
-      <form action="LoginServlet" method="POST" id="loginForm" novalidate>
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('user')">User Login</button>
+        <button class="tab-btn"        onclick="switchTab('admin')">Admin Login</button>
+      </div>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" />
-        <div class="err" id="emailErr"></div>
+      <!-- User Login -->
+      <div class="tab-panel active" id="tab-user">
+        <form action="LoginServlet" method="POST" id="loginForm" novalidate>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" />
+          <div class="err" id="emailErr"></div>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" />
-        <div class="err" id="passwordErr"></div>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" />
+          <div class="err" id="passwordErr"></div>
 
-        <button type="submit">Login</button>
-      </form>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+
+      <!-- Admin Login -->
+      <div class="tab-panel" id="tab-admin">
+        <form action="AdminLoginServlet" method="POST" id="adminForm" novalidate>
+          <label for="adminEmail">Email</label>
+          <input type="email" id="adminEmail" name="email" placeholder="Enter admin email" autocomplete="email" />
+          <div class="err" id="adminEmailErr"></div>
+
+          <label for="adminPassword">Password</label>
+          <input type="password" id="adminPassword" name="password" placeholder="Enter admin password" autocomplete="current-password" />
+          <div class="err" id="adminPasswordErr"></div>
+
+          <button type="submit">Login as Admin</button>
+        </form>
+      </div>
 
       <div class="card-footer">
         Don't have an account? <a href="signup.html">Sign Up</a>
@@ -142,7 +199,16 @@
   <footer>© 2026 E-Auction. All Rights Reserved.</footer>
 
   <script>
-    // Show banner from query param
+    // ── Tab switcher ──
+    function switchTab(tab) {
+      document.querySelectorAll(".tab-btn").forEach(function(btn, i) {
+        btn.classList.toggle("active", (tab === "user" && i === 0) || (tab === "admin" && i === 1));
+      });
+      document.getElementById("tab-user").classList.toggle("active",  tab === "user");
+      document.getElementById("tab-admin").classList.toggle("active", tab === "admin");
+    }
+
+    // ── Banner from query param ──
     const params = new URLSearchParams(window.location.search);
     const banner = document.getElementById("banner");
     if (params.get("status") === "registered") {
@@ -155,8 +221,14 @@
       banner.classList.add("error");
       banner.style.display = "block";
     }
+    if (params.get("error") === "invalid_admin") {
+      banner.textContent = "Invalid admin credentials.";
+      banner.classList.add("error");
+      banner.style.display = "block";
+      switchTab("admin");
+    }
 
-    // Validation
+    // ── Validation helpers ──
     function showErr(id, msg) {
       const el = document.getElementById(id);
       el.textContent = msg;
@@ -168,38 +240,46 @@
       el.style.display = "none";
     }
 
-    document.getElementById("loginForm").addEventListener("submit", function (e) {
-      e.preventDefault();
+    function validateForm(emailId, emailErrId, passwordId, passwordErrId) {
+      const email    = document.getElementById(emailId);
+      const password = document.getElementById(passwordId);
       let valid = true;
 
-      const email    = document.getElementById("email");
-      const password = document.getElementById("password");
-
-      // Email
       if (!email.value.trim()) {
-        showErr("emailErr", "Email cannot be blank.");
+        showErr(emailErrId, "Email cannot be blank.");
         email.classList.add("error");
         valid = false;
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
-        showErr("emailErr", "Enter a valid email address.");
+        showErr(emailErrId, "Enter a valid email address.");
         email.classList.add("error");
         valid = false;
       } else {
-        clearErr("emailErr");
+        clearErr(emailErrId);
         email.classList.remove("error");
       }
 
-      // Password
       if (!password.value) {
-        showErr("passwordErr", "Password cannot be blank.");
+        showErr(passwordErrId, "Password cannot be blank.");
         password.classList.add("error");
         valid = false;
       } else {
-        clearErr("passwordErr");
+        clearErr(passwordErrId);
         password.classList.remove("error");
       }
 
-      if (valid) this.submit();
+      return valid;
+    }
+
+    // User form validation
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      if (validateForm("email", "emailErr", "password", "passwordErr")) this.submit();
+    });
+
+    // Admin form validation
+    document.getElementById("adminForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      if (validateForm("adminEmail", "adminEmailErr", "adminPassword", "adminPasswordErr")) this.submit();
     });
   </script>
 

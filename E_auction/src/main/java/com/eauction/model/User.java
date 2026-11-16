@@ -11,7 +11,6 @@ public class User implements Serializable {
     private String mobile;
     private String address;
     private String gender;
-    private String role;
 
     
     // Default constructor (required for standard JavaBean practices)
@@ -70,12 +69,5 @@ public class User implements Serializable {
     }
     public void setGender(String gender) { 
         this.gender = gender; 
-    }
-
-    public String getRole() {
-        return role;
-    }
-    public void setRole(String role) {
-        this.role = role;
     }
 }

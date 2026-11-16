@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="com.eauction.model.Item" %>
 <%@ page import="com.eauction.model.Bid" %>
 <%@ page import="com.eauction.model.User" %>
@@ -14,6 +16,9 @@
     List<Item> itemList = (List<Item>) request.getAttribute("itemList");
     List<Bid>  myBids   = (List<Bid>)  request.getAttribute("myBids");
     List<Bid>  allBids  = (List<Bid>)  request.getAttribute("allBids");
+
+    // Formatter for auction end time display: e.g. "03 Sep 2026 08:45"
+    SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -200,6 +205,72 @@
         }
         .bid-btn:hover { background: #d97706; color: white; }
 
+        /* ── Auction ended styles ── */
+        .bid-btn-ended {
+            display: block;
+            text-align: center;
+            background: #9ca3af;
+            color: #f3f4f6;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 9px;
+            border-radius: 6px;
+            margin-top: 6px;
+            width: 100%;
+            border: none;
+            cursor: not-allowed;
+            filter: grayscale(100%);
+            opacity: 0.7;
+        }
+
+        .ended-msg {
+            font-size: 11px;
+            color: #dc2626;
+            margin-top: 4px;
+            text-align: center;
+        }
+
+        /* ── Countdown timer ── */
+        .countdown-box {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 5px;
+            margin-top: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .countdown-box .countdown-label {
+            color: #94a3b8;
+            font-weight: normal;
+            font-size: 11px;
+        }
+
+        .countdown-value {
+            background: #111827;
+            color: #f59e0b;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .countdown-value.urgent {
+            background: #dc2626;
+            color: white;
+        }
+
+        .countdown-ended {
+            font-size: 11px;
+            color: #dc2626;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 6px;
+        }
+
         /* ── Two column layout ── */
         .dashboard-layout {
             display: grid;
@@ -265,7 +336,6 @@
                 <div class="dropdown-header">
                     <div class="name"><%= loggedInUser.getName() %></div>
                     <div class="email"><%= loggedInUser.getEmail() %></div>
-                    <div class="email">Role: <%= loggedInUser.getRole() %></div>
                 </div>
                 <a href="LogoutServlet">&#x2192; Logout</a>
             </div>
@@ -286,9 +356,15 @@
             <section class="items-grid">
             <%
                 if (itemList != null && !itemList.isEmpty()) {
+                    Date now = new Date();
                     for (Item item : itemList) {
+                        boolean auctionEnded = item.getAuctionEndTime() != null 
+                                               && item.getAuctionEndTime().before(now);
+                        String endTimeFormatted = item.getAuctionEndTime() != null 
+                                                  ? sdf.format(item.getAuctionEndTime()) 
+                                                  : "N/A";
             %>
-                <div class="item-card">
+                <div class="item-card <%= auctionEnded ? "ended" : "" %>">
                     <img class="item-image" 
                          src="<%= request.getContextPath() %>/<%= (item.getItemPicture() != null && !item.getItemPicture().trim().isEmpty()) ? item.getItemPicture() : "images/placeholder.png" %>" 
                          alt="<%= item.getItemName() %>"
@@ -300,7 +376,26 @@
                         <p style="color: #64748b;"><%= item.getItemDescription() %></p>
                         <div class="item-price">₹<%= item.getStartingPrice() %></div>
                         <small style="color: #94a3b8;">Seller: <%= item.getSellerEmail() %></small>
-                        <a class="bid-btn" href="bidItem.jsp?itemId=<%= item.getItemId() %>&startingPrice=<%= item.getStartingPrice() %>&sellerEmail=<%= item.getSellerEmail() %>">Place Bid</a>
+                        <% if (auctionEnded) { %>
+                            <small style="color: #dc2626;">⏰ Ended: <%= endTimeFormatted %></small>
+                            <div class="countdown-ended">Auction ended at <%= endTimeFormatted %></div>
+                            <button class="bid-btn-ended" 
+                                    onclick="showEndedMsg(this, '<%= endTimeFormatted %>')">
+                                Place Bid
+                            </button>
+                            <div class="ended-msg" style="display:none;"></div>
+                        <% } else { %>
+                            <small style="color: #f59e0b;">⏰ Ends: <%= endTimeFormatted %></small>
+                            <div class="countdown-box">
+                                <span class="countdown-label">Time left:</span>
+                                <span class="countdown-value" 
+                                      data-endtime="<%= item.getAuctionEndTime().getTime() %>"
+                                      data-endformatted="<%= endTimeFormatted %>">
+                                    --:--:--
+                                </span>
+                            </div>
+                            <a class="bid-btn" href="bidItem.jsp?itemId=<%= item.getItemId() %>">Place Bid</a>
+                        <% } %>
                     </div>
                 </div>
             <%
@@ -382,6 +477,77 @@
             const menu = document.getElementById("userMenu");
             if (!menu.contains(e.target)) menu.classList.remove("open");
         });
+
+        function showEndedMsg(btn, endTime) {
+            const msgEl = btn.nextElementSibling;
+            msgEl.textContent = "Auction ended on " + endTime;
+            msgEl.style.display = "block";
+            btn.disabled = true;
+        }
+
+        // ── Countdown timers ──
+        function pad(n) { return String(n).padStart(2, "0"); }
+
+        function formatRemaining(ms) {
+            if (ms <= 0) return null;
+            const totalSec = Math.floor(ms / 1000);
+            const days  = Math.floor(totalSec / 86400);
+            const hrs   = Math.floor((totalSec % 86400) / 3600);
+            const mins  = Math.floor((totalSec % 3600) / 60);
+            const secs  = totalSec % 60;
+
+            if (days > 0) return days + "d " + pad(hrs) + "h " + pad(mins) + "m " + pad(secs) + "s";
+            return pad(hrs) + ":" + pad(mins) + ":" + pad(secs);
+        }
+
+        function tickAllCountdowns() {
+            const now = Date.now();
+            document.querySelectorAll(".countdown-value[data-endtime]").forEach(function(el) {
+                const endMs        = parseInt(el.getAttribute("data-endtime"), 10);
+                const endFormatted = el.getAttribute("data-endformatted");
+                const remaining    = endMs - now;
+
+                if (remaining <= 0) {
+                    // Auction just ended — replace the entire countdown-box with ended message
+                    const box = el.closest(".countdown-box");
+                    if (box) {
+                        const ended = document.createElement("div");
+                        ended.className = "countdown-ended";
+                        ended.textContent = "Auction ended at " + endFormatted;
+                        box.replaceWith(ended);
+                    }
+                    // Also grey out the bid button
+                    const card = el.closest(".item-card");
+                    if (card) {
+                        const bidBtn = card.querySelector(".bid-btn");
+                        if (bidBtn) {
+                            const disabledBtn = document.createElement("button");
+                            disabledBtn.className = "bid-btn-ended";
+                            disabledBtn.textContent = "Place Bid";
+                            disabledBtn.onclick = function() {
+                                showEndedMsg(disabledBtn, endFormatted);
+                            };
+                            const endedMsgDiv = document.createElement("div");
+                            endedMsgDiv.className = "ended-msg";
+                            endedMsgDiv.style.display = "none";
+                            bidBtn.replaceWith(disabledBtn);
+                            disabledBtn.after(endedMsgDiv);
+                        }
+                        card.classList.add("ended");
+                    }                } else {
+                    const text = formatRemaining(remaining);
+                    el.textContent = text;
+                    // Turn red when under 1 hour
+                    if (remaining < 3600000) {
+                        el.classList.add("urgent");
+                    }
+                }
+            });
+        }
+
+        // Run immediately then every second
+        tickAllCountdowns();
+        setInterval(tickAllCountdowns, 1000);
     </script>
 </body>
 </html>

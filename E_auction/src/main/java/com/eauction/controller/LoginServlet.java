@@ -46,12 +46,9 @@ public class LoginServlet extends HttpServlet {
         User loggedInUser = userDao.validateUser(email, password);
 
         if (loggedInUser != null) {
-            // Create HTTP Session and store user object & name
             HttpSession session = request.getSession();
             session.setAttribute("currentUser", loggedInUser);
             session.setAttribute("userName", loggedInUser.getName());
-
-            // Redirect to dashboard
             response.sendRedirect("DashboardServlet");
         } else {
             // Invalid credentials -> redirect back with error parameter
