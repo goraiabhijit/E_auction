@@ -1,238 +1,216 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" font-family="Arial, sans-serif" font-size="12">
-  <rect width="1400" height="1000" fill="#f8fafc" rx="10"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="980" font-family="Arial, sans-serif" font-size="12">
+  <rect width="1100" height="980" fill="white"/>
 
-  <!-- Title -->
-  <text x="700" y="38" text-anchor="middle" font-size="22" font-weight="bold" fill="#1e293b">E-Auction System — Level 1 DFD</text>
-
-  <!-- ===== Arrow Defs ===== -->
   <defs>
-    <marker id="a1" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto">
-      <polygon points="0 0,9 3,0 6" fill="#374151"/>
-    </marker>
-    <marker id="a-blue" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto">
-      <polygon points="0 0,9 3,0 6" fill="#1d4ed8"/>
-    </marker>
-    <marker id="a-green" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto">
-      <polygon points="0 0,9 3,0 6" fill="#16a34a"/>
-    </marker>
-    <marker id="a-pink" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto">
-      <polygon points="0 0,9 3,0 6" fill="#db2777"/>
-    </marker>
-    <marker id="a-orange" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto">
-      <polygon points="0 0,9 3,0 6" fill="#ea580c"/>
-    </marker>
-    <marker id="a-purple" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto">
-      <polygon points="0 0,9 3,0 6" fill="#7c3aed"/>
-    </marker>
-    <marker id="a-gold" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto">
-      <polygon points="0 0,9 3,0 6" fill="#b45309"/>
+    <marker id="a" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0,8 3,0 6" fill="#333"/>
     </marker>
   </defs>
 
-  <!-- ===== EXTERNAL ENTITIES ===== -->
+  <!-- Title -->
+  <text x="550" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="#111" text-decoration="underline">E-Auction System — Level 1 DFD</text>
 
-  <!-- User -->
-  <rect x="20" y="380" width="120" height="60" fill="#dcfce7" stroke="#16a34a" stroke-width="2" rx="5"/>
-  <text x="80" y="406" text-anchor="middle" font-size="13" font-weight="bold" fill="#14532d">User</text>
-  <text x="80" y="425" text-anchor="middle" font-size="10" fill="#166534">(Seller/Bidder)</text>
+  <!-- ================================================================
+       MODULE 1: SELLER MODULE   (top-left)
+  ================================================================ -->
+  <rect x="30" y="60" width="470" height="260" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="265" y="84" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">SELLER MODULE</text>
 
-  <!-- Admin -->
-  <rect x="1260" y="380" width="120" height="60" fill="#fce7f3" stroke="#db2777" stroke-width="2" rx="5"/>
-  <text x="1320" y="416" text-anchor="middle" font-size="13" font-weight="bold" fill="#831843">Admin</text>
+  <!-- External: Seller -->
+  <rect x="52" y="110" width="90" height="44" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="97" y="136" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">SELLER</text>
 
-  <!-- Buyer (bottom) -->
-  <rect x="620" y="900" width="140" height="60" fill="#fef9c3" stroke="#a16207" stroke-width="2" rx="5"/>
-  <text x="690" y="923" text-anchor="middle" font-size="13" font-weight="bold" fill="#713f12">Buyer</text>
-  <text x="690" y="942" text-anchor="middle" font-size="10" fill="#854d0e">(Winner)</text>
+  <!-- P1.1: Register / Login -->
+  <ellipse cx="260" cy="132" rx="80" ry="34" fill="white" stroke="#16a34a" stroke-width="1.8"/>
+  <text x="260" y="127" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">P1.1: Register</text>
+  <text x="260" y="142" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">/ Login</text>
 
-  <!-- ===== DATA STORES ===== -->
-  <!-- DS1: Users -->
-  <rect x="20" y="130" width="140" height="36" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
-  <line x1="20" y1="130" x2="20" y2="166" stroke="#16a34a" stroke-width="2"/>
-  <text x="90" y="153" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">DS1: Users</text>
+  <!-- P1.2: List Item -->
+  <ellipse cx="430" cy="132" rx="80" ry="34" fill="white" stroke="#16a34a" stroke-width="1.8"/>
+  <text x="430" y="127" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">P1.2: List Item</text>
+  <text x="430" y="142" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">for Auction</text>
+
+  <!-- DS1: Users (seller module) -->
+  <rect x="52" y="230" width="130" height="28" fill="white" stroke="#16a34a" stroke-width="1.5"/>
+  <line x1="52" y1="230" x2="52" y2="258" stroke="#16a34a" stroke-width="2"/>
+  <text x="117" y="248" text-anchor="middle" font-size="10" font-weight="bold" fill="#166534">DS1: Users</text>
 
   <!-- DS2: Items -->
-  <rect x="20" y="200" width="140" height="36" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
-  <line x1="20" y1="200" x2="20" y2="236" stroke="#16a34a" stroke-width="2"/>
-  <text x="90" y="223" text-anchor="middle" font-size="11" font-weight="bold" fill="#166534">DS2: Items</text>
+  <rect x="330" y="230" width="130" height="28" fill="white" stroke="#16a34a" stroke-width="1.5"/>
+  <line x1="330" y1="230" x2="330" y2="258" stroke="#16a34a" stroke-width="2"/>
+  <text x="395" y="248" text-anchor="middle" font-size="10" font-weight="bold" fill="#166534">DS2: Items</text>
+
+  <!-- FLOWS: Seller module -->
+  <!-- Seller → P1.1 -->
+  <line x1="142" y1="132" x2="180" y2="132" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="161" y="125" text-anchor="middle" font-size="9" fill="#333">Credentials</text>
+
+  <!-- P1.1 → DS1 -->
+  <line x1="220" y1="158" x2="140" y2="230" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="158" y="200" text-anchor="middle" font-size="9" fill="#333">Save User</text>
+
+  <!-- P1.1 → P1.2 -->
+  <line x1="340" y1="132" x2="350" y2="132" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="344" y="124" text-anchor="middle" font-size="9" fill="#333">Auth</text>
+
+  <!-- Seller → P1.2 (item details) -->
+  <line x1="142" y1="145" x2="300" y2="210" stroke="#333" stroke-width="1.5"/>
+  <line x1="300" y1="210" x2="370" y2="162" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="225" y="210" text-anchor="middle" font-size="9" fill="#333">Item Details</text>
+
+  <!-- P1.2 → DS2 -->
+  <line x1="430" y1="166" x2="430" y2="230" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="440" y="204" font-size="9" fill="#333">Store Item</text>
+
+
+  <!-- ================================================================
+       MODULE 2: BIDDER MODULE   (top-right)
+  ================================================================ -->
+  <rect x="600" y="60" width="470" height="260" rx="12" fill="#fefce8" stroke="#ca8a04" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="835" y="84" text-anchor="middle" font-size="13" font-weight="bold" fill="#a16207">BIDDER MODULE</text>
+
+  <!-- External: Bidder -->
+  <rect x="618" y="110" width="90" height="44" rx="5" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="663" y="136" text-anchor="middle" font-size="11" font-weight="bold" fill="#713f12">BIDDER</text>
+
+  <!-- P2.1: View Items -->
+  <ellipse cx="800" cy="132" rx="78" ry="34" fill="white" stroke="#ca8a04" stroke-width="1.8"/>
+  <text x="800" y="127" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">P2.1: View</text>
+  <text x="800" y="142" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">Items</text>
+
+  <!-- P2.2: Place Bid -->
+  <ellipse cx="980" cy="132" rx="78" ry="34" fill="white" stroke="#ca8a04" stroke-width="1.8"/>
+  <text x="980" y="127" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">P2.2: Place</text>
+  <text x="980" y="142" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">Bid</text>
+
+  <!-- DS2: Items (bidder reads) -->
+  <rect x="618" y="230" width="130" height="28" fill="white" stroke="#ca8a04" stroke-width="1.5"/>
+  <line x1="618" y1="230" x2="618" y2="258" stroke="#ca8a04" stroke-width="2"/>
+  <text x="683" y="248" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">DS2: Items</text>
 
   <!-- DS3: Bids -->
-  <rect x="1240" y="130" width="140" height="36" fill="#fefce8" stroke="#ca8a04" stroke-width="1.5"/>
-  <line x1="1240" y1="130" x2="1240" y2="166" stroke="#ca8a04" stroke-width="2"/>
-  <text x="1310" y="153" text-anchor="middle" font-size="11" font-weight="bold" fill="#713f12">DS3: Bids</text>
+  <rect x="890" y="230" width="130" height="28" fill="white" stroke="#ca8a04" stroke-width="1.5"/>
+  <line x1="890" y1="230" x2="890" y2="258" stroke="#ca8a04" stroke-width="2"/>
+  <text x="955" y="248" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">DS3: Bids</text>
 
-  <!-- DS4: AuctionResult -->
-  <rect x="1240" y="200" width="140" height="36" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
-  <line x1="1240" y1="200" x2="1240" y2="236" stroke="#7c3aed" stroke-width="2"/>
-  <text x="1310" y="223" text-anchor="middle" font-size="11" font-weight="bold" fill="#4c1d95">DS4: AuctionResult</text>
+  <!-- FLOWS: Bidder module -->
+  <!-- Bidder → P2.1 -->
+  <line x1="708" y1="132" x2="722" y2="132" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="714" y="124" text-anchor="middle" font-size="9" fill="#333">Browse</text>
 
-  <!-- DS5: Commission -->
-  <rect x="1240" y="270" width="140" height="36" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
-  <line x1="1240" y1="270" x2="1240" y2="306" stroke="#ea580c" stroke-width="2"/>
-  <text x="1310" y="293" text-anchor="middle" font-size="11" font-weight="bold" fill="#c2410c">DS5: Commission</text>
+  <!-- DS2 → P2.1 -->
+  <line x1="748" y1="230" x2="770" y2="162" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="742" y="202" text-anchor="middle" font-size="9" fill="#333">Item List</text>
 
-  <!-- ===== PROCESSES ===== -->
+  <!-- P2.1 → Bidder -->
+  <line x1="722" y1="145" x2="708" y2="150" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="716" y="160" text-anchor="middle" font-size="9" fill="#333">Items</text>
 
-  <!-- P1: User Registration & Login -->
-  <ellipse cx="310" cy="148" rx="110" ry="50" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
-  <text x="310" y="142" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e3a8a">P1: User</text>
-  <text x="310" y="158" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e3a8a">Registration/Login</text>
+  <!-- P2.1 → P2.2 -->
+  <line x1="878" y1="132" x2="902" y2="132" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="889" y="124" text-anchor="middle" font-size="9" fill="#333">Select Item</text>
 
-  <!-- P2: Put Item for Auction -->
-  <ellipse cx="560" cy="290" rx="110" ry="50" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
-  <text x="560" y="284" text-anchor="middle" font-size="12" font-weight="bold" fill="#14532d">P2: List Item</text>
-  <text x="560" y="300" text-anchor="middle" font-size="12" font-weight="bold" fill="#14532d">for Auction</text>
+  <!-- Bidder → P2.2 -->
+  <line x1="708" y1="148" x2="800" y2="210" stroke="#333" stroke-width="1.5"/>
+  <line x1="800" y1="210" x2="930" y2="162" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="770" y="225" text-anchor="middle" font-size="9" fill="#333">Bid Amount</text>
 
-  <!-- P3: Browse / View Items -->
-  <ellipse cx="310" cy="420" rx="110" ry="50" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
-  <text x="310" y="414" text-anchor="middle" font-size="12" font-weight="bold" fill="#14532d">P3: Browse &amp;</text>
-  <text x="310" y="430" text-anchor="middle" font-size="12" font-weight="bold" fill="#14532d">View Items</text>
+  <!-- P2.2 → DS3 -->
+  <line x1="980" y1="166" x2="970" y2="230" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="992" y="204" font-size="9" fill="#333">Save Bid</text>
 
-  <!-- P4: Place Bid -->
-  <ellipse cx="700" cy="420" rx="110" ry="50" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
-  <text x="700" y="414" text-anchor="middle" font-size="12" font-weight="bold" fill="#713f12">P4: Place</text>
-  <text x="700" y="430" text-anchor="middle" font-size="12" font-weight="bold" fill="#713f12">Bid</text>
 
-  <!-- P5: Manage Auction (Admin) -->
-  <ellipse cx="1100" cy="290" rx="110" ry="50" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
-  <text x="1100" y="284" text-anchor="middle" font-size="12" font-weight="bold" fill="#831843">P5: Manage</text>
-  <text x="1100" y="300" text-anchor="middle" font-size="12" font-weight="bold" fill="#831843">Auction (Admin)</text>
+  <!-- ================================================================
+       MODULE 3: ADMIN MODULE   (bottom-centre)
+  ================================================================ -->
+  <rect x="230" y="460" width="640" height="300" rx="12" fill="#fff1f2" stroke="#db2777" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="550" y="484" text-anchor="middle" font-size="13" font-weight="bold" fill="#be185d">ADMIN MODULE</text>
 
-  <!-- P6: Determine Auction Result -->
-  <ellipse cx="850" cy="560" rx="120" ry="55" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
-  <text x="850" y="550" text-anchor="middle" font-size="12" font-weight="bold" fill="#4c1d95">P6: Determine</text>
-  <text x="850" y="566" text-anchor="middle" font-size="12" font-weight="bold" fill="#4c1d95">Auction Result</text>
+  <!-- External: Admin -->
+  <rect x="252" y="510" width="90" height="44" rx="5" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+  <text x="297" y="536" text-anchor="middle" font-size="11" font-weight="bold" fill="#831843">ADMIN</text>
 
-  <!-- P7: Calculate Commission -->
-  <ellipse cx="1100" cy="560" rx="110" ry="55" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
-  <text x="1100" y="550" text-anchor="middle" font-size="12" font-weight="bold" fill="#7c2d12">P7: Calculate</text>
-  <text x="1100" y="566" text-anchor="middle" font-size="12" font-weight="bold" fill="#7c2d12">Commission</text>
+  <!-- P3.1: View Auctions -->
+  <ellipse cx="460" cy="532" rx="85" ry="34" fill="white" stroke="#db2777" stroke-width="1.8"/>
+  <text x="460" y="527" text-anchor="middle" font-size="11" font-weight="bold" fill="#be185d">P3.1: View</text>
+  <text x="460" y="542" text-anchor="middle" font-size="11" font-weight="bold" fill="#be185d">Auctions</text>
 
-  <!-- P8: View Dashboard -->
-  <ellipse cx="560" cy="700" rx="110" ry="50" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
-  <text x="560" y="694" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e3a8a">P8: View</text>
-  <text x="560" y="710" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e3a8a">Dashboard</text>
+  <!-- P3.2: Determine Result -->
+  <ellipse cx="660" cy="532" rx="85" ry="34" fill="white" stroke="#db2777" stroke-width="1.8"/>
+  <text x="660" y="527" text-anchor="middle" font-size="11" font-weight="bold" fill="#be185d">P3.2: Determine</text>
+  <text x="660" y="542" text-anchor="middle" font-size="11" font-weight="bold" fill="#be185d">Result</text>
 
-  <!-- ===== DATA FLOWS ===== -->
+  <!-- P3.3: Generate Commission -->
+  <ellipse cx="800" cy="650" rx="85" ry="34" fill="white" stroke="#db2777" stroke-width="1.8"/>
+  <text x="800" y="645" text-anchor="middle" font-size="11" font-weight="bold" fill="#be185d">P3.3: Generate</text>
+  <text x="800" y="660" text-anchor="middle" font-size="11" font-weight="bold" fill="#be185d">Commission</text>
 
-  <!-- User → P1: Credentials -->
-  <line x1="140" y1="405" x2="140" y2="148" stroke="#374151" stroke-width="1.5" marker-end="url(#a1)"/>
-  <line x1="140" y1="148" x2="200" y2="148" stroke="#374151" stroke-width="1.5" marker-end="url(#a1)"/>
-  <text x="143" y="285" font-size="10" fill="#374151">Credentials</text>
+  <!-- DS2: Items (admin reads) -->
+  <rect x="252" y="650" width="130" height="28" fill="white" stroke="#db2777" stroke-width="1.5"/>
+  <line x1="252" y1="650" x2="252" y2="678" stroke="#db2777" stroke-width="2"/>
+  <text x="317" y="668" text-anchor="middle" font-size="10" font-weight="bold" fill="#be185d">DS2: Items</text>
 
-  <!-- P1 → DS1: Save user -->
-  <line x1="160" y1="148" x2="20" y2="148" stroke="#16a34a" stroke-width="1.5" marker-end="url(#a-green)"/>
-  <text x="40" y="142" font-size="10" fill="#16a34a">Save User</text>
+  <!-- DS3: Bids (admin reads) -->
+  <rect x="470" y="650" width="130" height="28" fill="white" stroke="#db2777" stroke-width="1.5"/>
+  <line x1="470" y1="650" x2="470" y2="678" stroke="#db2777" stroke-width="2"/>
+  <text x="535" y="668" text-anchor="middle" font-size="10" font-weight="bold" fill="#be185d">DS3: Bids</text>
 
-  <!-- P1 → User: Login OK -->
-  <line x1="253" y1="175" x2="150" y2="390" stroke="#374151" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a1)"/>
-  <text x="175" y="295" font-size="10" fill="#374151" transform="rotate(-55 175 295)">Auth Token</text>
+  <!-- DS4: Commission -->
+  <rect x="690" y="730" width="150" height="28" fill="white" stroke="#ea580c" stroke-width="1.5"/>
+  <line x1="690" y1="730" x2="690" y2="758" stroke="#ea580c" stroke-width="2"/>
+  <text x="765" y="748" text-anchor="middle" font-size="10" font-weight="bold" fill="#c2410c">DS4: Commission</text>
 
-  <!-- User → P2: Item details -->
-  <line x1="140" y1="395" x2="450" y2="295" stroke="#16a34a" stroke-width="1.5" marker-end="url(#a-green)"/>
-  <text x="265" y="330" font-size="10" fill="#166534">Item Details</text>
+  <!-- FLOWS: Admin module -->
+  <!-- Admin → P3.1 -->
+  <line x1="342" y1="532" x2="375" y2="532" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="357" y="524" text-anchor="middle" font-size="9" fill="#333">Login</text>
 
-  <!-- P2 → DS2: Store item -->
-  <line x1="460" y1="275" x2="160" y2="218" stroke="#16a34a" stroke-width="1.5" marker-end="url(#a-green)"/>
-  <text x="270" y="240" font-size="10" fill="#16a34a">Store Item</text>
+  <!-- DS2 → P3.1 -->
+  <line x1="382" y1="650" x2="420" y2="560" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="383" y="614" text-anchor="middle" font-size="9" fill="#333">Items</text>
 
-  <!-- User → P3: Browse request -->
-  <line x1="140" y1="410" x2="200" y2="420" stroke="#374151" stroke-width="1.5" marker-end="url(#a1)"/>
-  <text x="145" y="407" font-size="10" fill="#374151">Browse Req.</text>
+  <!-- DS3 → P3.1 -->
+  <line x1="535" y1="650" x2="492" y2="562" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="530" y="614" text-anchor="middle" font-size="9" fill="#333">Bids</text>
 
-  <!-- DS2 → P3: Item list -->
-  <line x1="160" y1="225" x2="220" y2="390" stroke="#16a34a" stroke-width="1.5" marker-end="url(#a-green)"/>
-  <text x="145" y="315" font-size="10" fill="#16a34a">Item List</text>
+  <!-- P3.1 → P3.2 -->
+  <line x1="545" y1="532" x2="575" y2="532" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="559" y="524" text-anchor="middle" font-size="9" fill="#333">Data</text>
 
-  <!-- P3 → User: Items displayed -->
-  <line x1="200" y1="435" x2="140" y2="435" stroke="#374151" stroke-width="1.5" marker-end="url(#a1)"/>
-  <text x="143" y="450" font-size="10" fill="#374151">Items Info</text>
+  <!-- P3.2 → P3.3 -->
+  <line x1="720" y1="550" x2="780" y2="620" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="772" y="588" font-size="9" fill="#333">Sale Amt</text>
 
-  <!-- User → P4: Bid details -->
-  <line x1="140" y1="420" x2="590" y2="420" stroke="#ca8a04" stroke-width="1.5" marker-end="url(#a-gold)"/>
-  <text x="340" y="413" font-size="10" fill="#ca8a04">Bid Amount + ItemId</text>
+  <!-- Admin → P3.3 -->
+  <line x1="342" y1="548" x2="720" y2="650" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="530" y="615" text-anchor="middle" font-size="9" fill="#333">Trigger</text>
 
-  <!-- DS2 → P4: Item/price check -->
-  <line x1="160" y1="230" x2="660" y2="380" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a-green)"/>
-  <text x="380" y="285" font-size="10" fill="#16a34a">Starting Price</text>
+  <!-- P3.3 → DS4 -->
+  <line x1="800" y1="684" x2="790" y2="730" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="818" y="712" font-size="9" fill="#c2410c">Save</text>
 
-  <!-- P4 → DS3: Store bid -->
-  <line x1="810" y1="400" x2="1240" y2="145" stroke="#ca8a04" stroke-width="1.5" marker-end="url(#a-gold)"/>
-  <text x="1020" y="260" font-size="10" fill="#ca8a04">Save Bid Record</text>
 
-  <!-- P4 → User: Bid confirmation -->
-  <line x1="593" y1="430" x2="140" y2="430" stroke="#374151" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a1)"/>
-  <text x="310" y="445" font-size="10" fill="#374151">Bid Confirmation</text>
+  <!-- ================================================================
+       CROSS-MODULE SHARED DS LABELS (DS2 and DS3 shared)
+  ================================================================ -->
+  <!-- Connecting label: DS2 shared between Seller, Bidder, Admin -->
+  <text x="550" y="400" text-anchor="middle" font-size="11" fill="#64748b" font-style="italic">DS2: Items and DS3: Bids are shared across modules (same Oracle tables)</text>
 
-  <!-- Admin → P5 -->
-  <line x1="1260" y1="400" x2="1210" y2="310" stroke="#db2777" stroke-width="1.5" marker-end="url(#a-pink)"/>
-  <text x="1225" y="345" font-size="10" fill="#db2777">Admin Credentials</text>
-
-  <!-- P5 → DS2: Manage items -->
-  <line x1="990" y1="275" x2="700" y2="255" stroke="#db2777" stroke-width="1.5" marker-end="url(#a-pink)"/>
-  <text x="830" y="253" font-size="10" fill="#db2777">Update/Delete Item</text>
-
-  <!-- P5 → DS3: View bids -->
-  <line x1="1210" y1="300" x2="1240" y2="155" stroke="#db2777" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a-pink)"/>
-  <text x="1220" y="225" font-size="10" fill="#db2777">View Bids</text>
-
-  <!-- P6 consumes bids from DS3 -->
-  <line x1="1240" y1="165" x2="970" y2="540" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#a-purple)"/>
-  <text x="1090" y="390" font-size="10" fill="#7c3aed">All Bids for Item</text>
-
-  <!-- P6 consumes items from DS2 -->
-  <line x1="160" y1="218" x2="738" y2="528" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a-purple)"/>
-  <text x="390" y="420" font-size="10" fill="#7c3aed">Item End Time</text>
-
-  <!-- P6 → DS4: Save result -->
-  <line x1="968" y1="545" x2="1240" y2="218" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#a-purple)"/>
-  <text x="1070" y="440" font-size="10" fill="#7c3aed">Auction Result</text>
-
-  <!-- P6 → Buyer: Winner notification -->
-  <line x1="790" y1="610" x2="720" y2="900" stroke="#b45309" stroke-width="1.5" marker-end="url(#a-gold)"/>
-  <text x="720" y="770" font-size="10" fill="#b45309">Winner Notification</text>
-
-  <!-- P6 → P7 -->
-  <line x1="968" y1="560" x2="990" y2="560" stroke="#ea580c" stroke-width="1.5" marker-end="url(#a-orange)"/>
-  <text x="975" y="552" font-size="10" fill="#ea580c">Sale Amount</text>
-
-  <!-- P7 → DS5: Save commission -->
-  <line x1="1210" y1="560" x2="1240" y2="285" stroke="#ea580c" stroke-width="1.5" marker-end="url(#a-orange)"/>
-  <text x="1240" y="430" font-size="10" fill="#ea580c">Commission Record</text>
-
-  <!-- P5 → DS4/DS5: View results -->
-  <line x1="1210" y1="310" x2="1240" y2="218" stroke="#db2777" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a-pink)"/>
-
-  <!-- P8: Dashboard (User views) -->
-  <line x1="140" y1="440" x2="140" y2="700" stroke="#374151" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a1)"/>
-  <line x1="140" y1="700" x2="450" y2="700" stroke="#374151" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a1)"/>
-  <text x="145" y="580" font-size="10" fill="#374151">Dashboard Req.</text>
-
-  <!-- DS2,DS3,DS4,DS5 → P8 (aggregated) -->
-  <line x1="560" y1="750" x2="560" y2="790" stroke="#374151" stroke-width="1" stroke-dasharray="4,2"/>
-  <line x1="160" y1="236" x2="560" y2="650" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a-green)"/>
-  <text x="310" y="490" font-size="10" fill="#16a34a">Items Summary</text>
-
-  <line x1="1240" y1="150" x2="670" y2="690" stroke="#ca8a04" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a-gold)"/>
-  <text x="1050" y="490" font-size="10" fill="#ca8a04">Bids Summary</text>
-
-  <!-- P8 → User: Dashboard view -->
-  <line x1="450" y1="700" x2="140" y2="450" stroke="#374151" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a1)"/>
-  <text x="250" y="610" font-size="10" fill="#374151">Dashboard Data</text>
-
-  <!-- ===== LEGEND ===== -->
-  <rect x="20" y="940" width="700" height="52" fill="white" stroke="#94a3b8" rx="4"/>
-  <text x="35" y="960" font-size="12" font-weight="bold" fill="#334155">Legend:</text>
-  <ellipse cx="110" cy="956" rx="28" ry="13" fill="#dbeafe" stroke="#2563eb"/>
-  <text x="143" y="960" font-size="11" fill="#334155">Process (P#)</text>
-  <rect x="230" y="946" width="40" height="18" fill="#f0fdf4" stroke="#16a34a"/>
-  <line x1="230" y1="946" x2="230" y2="964" stroke="#16a34a" stroke-width="2"/>
-  <text x="276" y="960" font-size="11" fill="#334155">Data Store (DS#)</text>
-  <rect x="390" y="946" width="40" height="18" fill="#dcfce7" stroke="#16a34a"/>
-  <text x="435" y="960" font-size="11" fill="#334155">External Entity</text>
-  <line x1="560" y1="956" x2="590" y2="956" stroke="#374151" stroke-width="1.5" marker-end="url(#a1)"/>
-  <text x="596" y="960" font-size="11" fill="#334155">Data Flow</text>
-  <line x1="35" y1="977" x2="65" y2="977" stroke="#374151" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a1)"/>
-  <text x="70" y="981" font-size="11" fill="#334155">Optional / Read-only flow</text>
+  <!-- ================================================================
+       LEGEND
+  ================================================================ -->
+  <rect x="30" y="900" width="680" height="52" rx="4" fill="white" stroke="#aaa" stroke-width="1"/>
+  <text x="48" y="920" font-size="11" font-weight="bold" fill="#111">Legend:</text>
+  <ellipse cx="118" cy="916" rx="26" ry="12" fill="#f0f9ff" stroke="#0369a1"/>
+  <text x="150" y="920" font-size="11" fill="#111">Process</text>
+  <rect x="230" y="907" width="36" height="18" fill="#f0fdf4" stroke="#16a34a"/>
+  <line x1="230" y1="907" x2="230" y2="925" stroke="#16a34a" stroke-width="2"/>
+  <text x="272" y="920" font-size="11" fill="#111">Data Store</text>
+  <rect x="380" y="907" width="36" height="18" fill="#dcfce7" stroke="#16a34a" rx="3"/>
+  <text x="422" y="920" font-size="11" fill="#111">External Entity</text>
+  <line x1="48" y1="940" x2="74" y2="940" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="80" y="944" font-size="11" fill="#111">Data Flow</text>
+  <rect x="230" y="930" width="130" height="18" rx="4" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="295" y="943" text-anchor="middle" font-size="11" fill="#111">Module boundary</text>
 </svg>
