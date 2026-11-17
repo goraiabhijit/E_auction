@@ -4,6 +4,5 @@ INDEX VERSION 1.4+C:\Users\abhij\Desktop\E_auction\.metadata\.plugins\org.eclips
 3666290435.index
 3954977521.index
 3211134732.index
-3211134732.index
 996356870.index
 455705471.index
