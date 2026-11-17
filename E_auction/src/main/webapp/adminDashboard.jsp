@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.eauction.model.Admin" %>
 <%@ page import="com.eauction.model.AuctionResult" %>
+<%@ page import="com.eauction.model.Commission" %>
 <%@ page import="com.eauction.model.Item" %>
 <%@ page import="com.eauction.model.User" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%
     Admin currentAdmin = (Admin) session.getAttribute("currentAdmin");
@@ -15,11 +17,12 @@
     List<User>          allUsers          = (List<User>)          request.getAttribute("allUsers");
     List<Item>          activeItems       = (List<Item>)          request.getAttribute("activeItems");
     List<Item>          completedItems    = (List<Item>)          request.getAttribute("completedItems");
-    List<AuctionResult> completedAuctions = (List<AuctionResult>) request.getAttribute("completedAuctions");
+    List<AuctionResult> completedWithBids = (List<AuctionResult>) request.getAttribute("completedWithBids");
+    Map<Integer, Commission> commissionMap = (Map<Integer, Commission>) request.getAttribute("commissionMap");
 
-    int totalUsers     = (Integer) request.getAttribute("totalUsers");
-    int activeCount    = (Integer) request.getAttribute("activeCount");
-    int completedCount = (Integer) request.getAttribute("completedCount");
+    int totalUsers     = request.getAttribute("totalUsers")     != null ? (Integer) request.getAttribute("totalUsers")     : 0;
+    int activeCount    = request.getAttribute("activeCount")    != null ? (Integer) request.getAttribute("activeCount")    : 0;
+    int completedCount = request.getAttribute("completedCount") != null ? (Integer) request.getAttribute("completedCount") : 0;
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH:mm");
 %>
@@ -32,18 +35,19 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
 
-        body { background: #f4f6f9; color: #1f2937; }
+        body { background: #f1f5f9; color: #1f2937; }
 
         /* ── Header ── */
         .admin-header {
             height: 70px;
-            background: #101827;
+            background: #0f0f1a;
             color: white;
             display: flex;
             align-items: center;
             padding: 0 30px;
             gap: 20px;
             border-top: 3px solid #f59e0b;
+            border-bottom: 1px solid #312e81;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -62,7 +66,7 @@
             color: white;
             border: none;
             padding: 9px 18px;
-            border-radius: 6px;
+            border-radius: 999px;
             cursor: pointer;
             font-size: 13px;
             font-weight: bold;
@@ -73,9 +77,9 @@
         .dashboard-container { display: flex; min-height: calc(100vh - 70px); }
 
         /* ── Sidebar ── */
-        .sidebar { width: 240px; background: #111827; padding: 24px 12px; flex-shrink: 0; }
+        .sidebar { width: 240px; background: #1e1b4b; padding: 24px 12px; flex-shrink: 0; }
 
-        .sidebar h3 { color: #9ca3af; font-size: 11px; text-transform: uppercase;
+        .sidebar h3 { color: #818cf8; font-size: 11px; text-transform: uppercase;
                       letter-spacing: 1px; margin-bottom: 14px; padding-left: 10px; }
 
         .menu-btn {
@@ -84,29 +88,29 @@
             align-items: center;
             gap: 10px;
             background: transparent;
-            color: #d1d5db;
+            color: #a5b4fc;
             border: none;
             text-align: left;
             padding: 12px 14px;
             margin-bottom: 4px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
             transition: background 0.2s, color 0.2s;
         }
-        .menu-btn:hover { background: rgba(245,158,11,0.1); color: #f59e0b; }
-        .menu-btn.active { background: #f59e0b; color: #111827; font-weight: bold; }
+        .menu-btn:hover { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .menu-btn.active { background: #f59e0b; color: #111; border-radius: 999px; font-weight: bold; }
 
         .menu-icon { font-size: 16px; width: 20px; text-align: center; }
 
         /* ── Main content ── */
-        .main-content { flex: 1; padding: 30px; overflow-x: auto; }
+        .main-content { flex: 1; padding: 30px; overflow-x: auto; background: #f1f5f9; }
 
         .content-section { display: none; }
         .content-section.active-section { display: block; }
 
         .section-header { margin-bottom: 24px; }
-        .section-header h1 { font-size: 24px; color: #111827; }
+        .section-header h1 { font-size: 24px; color: #1e1b4b; }
         .section-header p { color: #6b7280; margin-top: 6px; font-size: 14px; }
 
         /* ── Stat cards ── */
@@ -120,24 +124,25 @@
         .stat-card {
             background: white;
             padding: 24px;
-            border-radius: 10px;
+            border-radius: 16px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-            border-left: 4px solid #f59e0b;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
 
         .stat-card h3 { color: #6b7280; font-size: 13px; text-transform: uppercase;
                         letter-spacing: 0.5px; margin-bottom: 10px; }
 
-        .stat-card .stat-value { font-size: 32px; font-weight: bold; color: #111827; }
+        .stat-card .stat-value { font-size: 36px; font-weight: bold; color: #111827; }
 
-        .stat-card.blue  { border-left-color: #3b82f6; }
-        .stat-card.green { border-left-color: #10b981; }
-        .stat-card.amber { border-left-color: #f59e0b; }
+        .stat-card.blue  { border-top: 4px solid #6366f1; }
+        .stat-card.green { border-top: 4px solid #10b981; }
+        .stat-card.amber { border-top: 4px solid #f59e0b; }
 
         /* ── Table ── */
         .table-container {
             background: white;
-            border-radius: 10px;
+            border-radius: 16px;
             padding: 20px;
             overflow-x: auto;
             box-shadow: 0 2px 10px rgba(0,0,0,0.07);
@@ -146,7 +151,7 @@
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
 
         th {
-            background: #101827;
+            background: #1e1b4b;
             color: white;
             padding: 13px 14px;
             text-align: left;
@@ -154,7 +159,7 @@
             font-weight: bold;
         }
 
-        td { padding: 12px 14px; border-bottom: 1px solid #e5e7eb; font-size: 13px; color: #374151; }
+        td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #374151; }
         tr:last-child td { border-bottom: none; }
         tr:hover td { background: #f9fafb; }
 
@@ -162,7 +167,7 @@
 
         .badge {
             padding: 4px 10px;
-            border-radius: 20px;
+            border-radius: 999px;
             font-size: 11px;
             font-weight: bold;
             display: inline-block;
@@ -177,7 +182,7 @@
             background: white;
             max-width: 560px;
             padding: 28px;
-            border-radius: 10px;
+            border-radius: 16px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.07);
             margin-bottom: 28px;
         }
@@ -186,16 +191,19 @@
 
         .form-group { margin-bottom: 18px; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: bold;
-                            font-size: 13px; color: #374151; }
+                            font-size: 13px; color: #4f46e5; }
         .form-group input, .form-group select {
             width: 100%; padding: 10px 12px; border: 1px solid #d1d5db;
             border-radius: 6px; font-size: 14px; outline: none;
         }
-        .form-group input:focus, .form-group select:focus { border-color: #f59e0b; }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99,102,241,0.15);
+        }
 
         .generate-btn {
             background: #f59e0b; border: none; padding: 11px 22px;
-            border-radius: 6px; cursor: pointer; font-weight: bold;
+            border-radius: 999px; cursor: pointer; font-weight: bold;
             font-size: 14px; color: #111827; transition: background 0.2s;
         }
         .generate-btn:hover { background: #d97706; color: white; }
@@ -230,7 +238,6 @@
         <button class="menu-btn active" onclick="showSection('dashboard',    this)"><span class="menu-icon">📊</span> Dashboard</button>
         <button class="menu-btn"        onclick="showSection('users',         this)"><span class="menu-icon">👥</span> Users</button>
         <button class="menu-btn"        onclick="showSection('itemDetails',   this)"><span class="menu-icon">🏷</span> Item Details</button>
-        <button class="menu-btn"        onclick="showSection('auctionDetails',this)"><span class="menu-icon">🔨</span> Auction Details</button>
         <button class="menu-btn"        onclick="showSection('commission',    this)"><span class="menu-icon">💰</span> Generate Commission</button>
     </aside>
 
@@ -329,7 +336,7 @@
                             <td><strong><%= it.getItemName() %></strong></td>
                             <td><%= it.getSellerEmail() %></td>
                             <td>₹<%= it.getStartingPrice() %></td>
-                            <td>—</td>
+                            <td><%= it.getHighestBid() > 0 ? "₹" + it.getHighestBid() : "<span class=\"badge badge-red\">No bids</span>" %></td>
                             <td><%= it.getAuctionEndTime() != null ? sdf.format(it.getAuctionEndTime()) : "—" %></td>
                             <td><span class="badge badge-amber">Active</span></td>
                         </tr>
@@ -344,9 +351,15 @@
                             <td><strong><%= it.getItemName() %></strong></td>
                             <td><%= it.getSellerEmail() %></td>
                             <td>₹<%= it.getStartingPrice() %></td>
-                            <td>—</td>
+                            <td><%= it.getHighestBid() > 0 ? "₹" + it.getHighestBid() : "<span class=\"badge badge-red\">No bids</span>" %></td>
                             <td><%= it.getAuctionEndTime() != null ? sdf.format(it.getAuctionEndTime()) : "—" %></td>
-                            <td><span class="badge badge-green">Completed</span></td>
+                            <td>
+                                <% if (it.getHighestBid() > 0) { %>
+                                    <span class="badge badge-green">Completed</span>
+                                <% } else { %>
+                                    <span class="badge badge-red">Unsold</span>
+                                <% } %>
+                            </td>
                         </tr>
                         <%
                                 }
@@ -361,11 +374,11 @@
             </div>
         </section>
 
-        <!-- Auction Details Section -->
-        <section id="auctionDetails" class="content-section">
+        <!-- Generate Commission Section -->
+        <section id="commission" class="content-section">
             <div class="section-header">
-                <h1>Auction Details</h1>
-                <p>All completed auctions — closing bid, buyer, and seller information.</p>
+                <h1>Generate Commission</h1>
+                <p>Completed auctions with bids. Commission rate: <strong>5%</strong> of closing bid.</p>
             </div>
             <div class="table-container">
                 <table>
@@ -374,32 +387,38 @@
                             <th>Item ID</th>
                             <th>Item Name</th>
                             <th>Seller Email</th>
-                            <th>Starting Price</th>
                             <th>Closing Bid</th>
-                            <th>Buyer Email</th>
-                            <th>Closed At</th>
-                            <th>Result</th>
+                            <th>Commission (5%)</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                     <%
-                        if (completedAuctions != null && !completedAuctions.isEmpty()) {
-                            for (AuctionResult ar : completedAuctions) {
-                                boolean hasBid = ar.getBuyerEmail() != null;
+                        if (completedWithBids != null && !completedWithBids.isEmpty()) {
+                            for (AuctionResult ar : completedWithBids) {
+                                Commission existing = commissionMap != null ? commissionMap.get(ar.getItemId()) : null;
+                                double commAmt = Math.round(ar.getClosingBid() * 5.0) / 100.0;
                     %>
                         <tr>
                             <td>#<%= ar.getItemId() %></td>
                             <td><strong><%= ar.getItemName() %></strong></td>
                             <td><%= ar.getSellerEmail() %></td>
-                            <td>₹<%= ar.getStartingPrice() %></td>
-                            <td><%= hasBid ? "₹" + ar.getClosingBid() : "—" %></td>
-                            <td><%= hasBid ? ar.getBuyerEmail() : "—" %></td>
-                            <td><%= ar.getAuctionEndTime() != null ? sdf.format(ar.getAuctionEndTime()) : "—" %></td>
+                            <td>₹<%= ar.getClosingBid() %></td>
+                            <td>₹<%= commAmt %></td>
                             <td>
-                                <% if (hasBid) { %>
-                                    <span class="badge badge-green">Sold</span>
+                                <% if (existing != null) { %>
+                                    <span class="badge badge-green">
+                                        ✓ ₹<%= existing.getCommissionAmt() %> on <%= sdf.format(existing.getGeneratedAt()) %>
+                                    </span>
                                 <% } else { %>
-                                    <span class="badge badge-red">Unsold</span>
+                                    <form action="GenerateCommissionServlet" method="POST" style="margin:0;">
+                                        <input type="hidden" name="itemId"      value="<%= ar.getItemId() %>" />
+                                        <input type="hidden" name="sellerEmail" value="<%= ar.getSellerEmail() %>" />
+                                        <input type="hidden" name="saleAmount"  value="<%= ar.getClosingBid() %>" />
+                                        <button type="submit" class="generate-btn" style="padding:6px 14px; font-size:12px;">
+                                            Generate Commission
+                                        </button>
+                                    </form>
                                 <% } %>
                             </td>
                         </tr>
@@ -408,63 +427,11 @@
                         } else {
                     %>
                         <tr class="empty-row">
-                            <td colspan="8">No completed auctions yet.</td>
+                            <td colspan="6">No completed auctions with bids found.</td>
                         </tr>
                     <%
                         }
                     %>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Generate Commission Section -->
-        <section id="commission" class="content-section">
-            <div class="section-header">
-                <h1>Generate Commission</h1>
-                <p>Calculate and record commission for completed auctions.</p>
-            </div>
-
-            <div class="commission-form">
-                <h2>Commission Calculator</h2>
-
-                <div class="form-group">
-                    <label for="sellerEmail">Seller Email</label>
-                    <input type="email" id="sellerEmail" placeholder="Enter seller email" />
-                </div>
-
-                <div class="form-group">
-                    <label for="saleAmount">Sale Amount (₹)</label>
-                    <input type="number" id="saleAmount" placeholder="Enter sale amount" min="0" />
-                </div>
-
-                <div class="form-group">
-                    <label for="commissionRate">Commission Percentage (%)</label>
-                    <input type="number" id="commissionRate" placeholder="e.g. 5" min="0" max="100" />
-                </div>
-
-                <button class="generate-btn" onclick="generateCommission()">Generate Commission</button>
-
-                <div class="commission-result" id="commissionResult"></div>
-            </div>
-
-            <!-- Commission log table -->
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Seller Email</th>
-                            <th>Sale Amount</th>
-                            <th>Commission %</th>
-                            <th>Commission Amount</th>
-                            <th>Generated On</th>
-                        </tr>
-                    </thead>
-                    <tbody id="commissionTable">
-                        <tr class="empty-row" id="commissionEmptyRow">
-                            <td colspan="6">No commissions generated yet.</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -492,65 +459,6 @@
         if (confirm("Are you sure you want to logout?")) {
             window.location.href = "LogoutServlet";
         }
-    }
-
-    // ── Commission generator ──
-    let commissionCount = 0;
-
-    function generateCommission() {
-        const email          = document.getElementById("sellerEmail").value.trim();
-        const saleAmount     = parseFloat(document.getElementById("saleAmount").value);
-        const commissionRate = parseFloat(document.getElementById("commissionRate").value);
-        const result         = document.getElementById("commissionResult");
-
-        if (!email) {
-            showResult(result, "Please enter a seller email.", false); return;
-        }
-        if (isNaN(saleAmount) || saleAmount <= 0) {
-            showResult(result, "Please enter a valid sale amount.", false); return;
-        }
-        if (isNaN(commissionRate) || commissionRate <= 0 || commissionRate > 100) {
-            showResult(result, "Commission percentage must be between 1 and 100.", false); return;
-        }
-
-        const commissionAmount = (saleAmount * commissionRate / 100).toFixed(2);
-
-        showResult(result,
-            "Sale Amount: ₹" + saleAmount.toFixed(2) +
-            " &nbsp;|&nbsp; Rate: " + commissionRate + "%" +
-            " &nbsp;|&nbsp; Commission: <strong>₹" + commissionAmount + "</strong>",
-            true
-        );
-
-        // Add to table
-        commissionCount++;
-        const emptyRow = document.getElementById("commissionEmptyRow");
-        if (emptyRow) emptyRow.remove();
-
-        const tbody = document.getElementById("commissionTable");
-        const today = new Date();
-        const dateStr = String(today.getDate()).padStart(2,"0") + " " +
-                        today.toLocaleString("default", { month: "short" }) + " " +
-                        today.getFullYear() + " " +
-                        String(today.getHours()).padStart(2,"0") + ":" +
-                        String(today.getMinutes()).padStart(2,"0");
-
-        const row = tbody.insertRow(0);
-        row.innerHTML =
-            "<td>" + commissionCount + "</td>" +
-            "<td>" + email + "</td>" +
-            "<td>₹" + saleAmount.toFixed(2) + "</td>" +
-            "<td>" + commissionRate + "%</td>" +
-            "<td><strong>₹" + commissionAmount + "</strong></td>" +
-            "<td>" + dateStr + "</td>";
-    }
-
-    function showResult(el, msg, success) {
-        el.innerHTML = msg;
-        el.style.display = "block";
-        el.style.background  = success ? "#f0fdf4" : "#fee2e2";
-        el.style.borderColor = success ? "#86efac" : "#fca5a5";
-        el.style.color       = success ? "#166534" : "#991b1b";
     }
 </script>
 
