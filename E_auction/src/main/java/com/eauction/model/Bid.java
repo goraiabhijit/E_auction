@@ -3,8 +3,8 @@ package com.eauction.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Bid implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Bid  {
+   
 
     private int    bidId;
     private int    itemId;

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="980" font-family="Arial, sans-serif" font-size="12">
+  <rect width="1400" height="980" fill="#f8fafc"/>
+  <defs>
+    <marker id="mk" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto">
+      <polygon points="0 0,9 3,0 6" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <text x="700" y="36" text-anchor="middle" font-size="20" font-weight="bold" fill="#1e293b" text-decoration="underline">ER-Diagram — E-Auction System</text>
+
+  <!-- ENTITY: USERS -->
+  <rect x="40" y="60" width="220" height="204" rx="4" fill="white" stroke="#2563eb" stroke-width="2"/>
+  <rect x="40" y="60" width="220" height="32" rx="4" fill="#2563eb"/>
+  <rect x="40" y="84" width="220" height="8" fill="#2563eb"/>
+  <text x="150" y="81" text-anchor="middle" font-size="13" font-weight="bold" fill="white">USERS</text>
+  <text x="56" y="110" fill="#1e3a8a" font-weight="bold">🔑 Email (PK)</text>
+  <line x1="40" y1="118" x2="260" y2="118" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="56" y="136" fill="#1e40af">Name</text>
+  <line x1="40" y1="144" x2="260" y2="144" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="56" y="162" fill="#1e40af">Password</text>
+  <line x1="40" y1="170" x2="260" y2="170" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="56" y="188" fill="#1e40af">Mobile</text>
+  <line x1="40" y1="196" x2="260" y2="196" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="56" y="214" fill="#1e40af">Address</text>
+  <line x1="40" y1="222" x2="260" y2="222" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="56" y="240" fill="#1e40af">Gender</text>
+  <text x="56" y="258" fill="#64748b" font-size="10" font-style="italic">(Seller / Bidder)</text>
+
+  <!-- ENTITY: ADMIN -->
+  <rect x="40" y="680" width="220" height="140" rx="4" fill="white" stroke="#db2777" stroke-width="2"/>
+  <rect x="40" y="680" width="220" height="32" rx="4" fill="#db2777"/>
+  <rect x="40" y="704" width="220" height="8" fill="#db2777"/>
+  <text x="150" y="701" text-anchor="middle" font-size="13" font-weight="bold" fill="white">ADMIN</text>
+  <text x="56" y="730" fill="#831843" font-weight="bold">🔑 Email (PK)</text>
+  <line x1="40" y1="738" x2="260" y2="738" stroke="#fce7f3" stroke-width="1"/>
+  <text x="56" y="756" fill="#9d174d">Name</text>
+  <line x1="40" y1="764" x2="260" y2="764" stroke="#fce7f3" stroke-width="1"/>
+  <text x="56" y="782" fill="#9d174d">Password</text>
+  <text x="56" y="806" fill="#64748b" font-size="10" font-style="italic">(System Administrator)</text>
+
+  <!-- ENTITY: ITEMS -->
+  <rect x="540" y="60" width="260" height="240" rx="4" fill="white" stroke="#16a34a" stroke-width="2"/>
+  <rect x="540" y="60" width="260" height="32" rx="4" fill="#16a34a"/>
+  <rect x="540" y="84" width="260" height="8" fill="#16a34a"/>
+  <text x="670" y="81" text-anchor="middle" font-size="13" font-weight="bold" fill="white">ITEMS</text>
+  <text x="556" y="110" fill="#14532d" font-weight="bold">🔑 Item Id (PK)</text>
+  <line x1="540" y1="118" x2="800" y2="118" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="556" y="136" fill="#166534">Item Name</text>
+  <line x1="540" y1="144" x2="800" y2="144" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="556" y="162" fill="#166534">Item Description</text>
+  <line x1="540" y1="170" x2="800" y2="170" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="556" y="188" fill="#166534">Item Picture</text>
+  <line x1="540" y1="196" x2="800" y2="196" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="556" y="214" fill="#166534">Starting Price</text>
+  <line x1="540" y1="222" x2="800" y2="222" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="556" y="240" fill="#166534">Auction Start Time</text>
+  <line x1="540" y1="248" x2="800" y2="248" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="556" y="266" fill="#166534">Auction End Time</text>
+  <line x1="540" y1="274" x2="800" y2="274" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="556" y="292" fill="#166534">Seller Email</text>
+
+  <!-- ENTITY: BIDS -->
+  <rect x="540" y="580" width="260" height="180" rx="4" fill="white" stroke="#ca8a04" stroke-width="2"/>
+  <rect x="540" y="580" width="260" height="32" rx="4" fill="#ca8a04"/>
+  <rect x="540" y="604" width="260" height="8" fill="#ca8a04"/>
+  <text x="670" y="601" text-anchor="middle" font-size="13" font-weight="bold" fill="white">BIDS</text>
+  <text x="556" y="630" fill="#713f12" font-weight="bold">🔑 Bid Id (PK)</text>
+  <line x1="540" y1="638" x2="800" y2="638" stroke="#fef08a" stroke-width="1"/>
+  <text x="556" y="656" fill="#78350f">Item Id</text>
+  <line x1="540" y1="664" x2="800" y2="664" stroke="#fef08a" stroke-width="1"/>
+  <text x="556" y="682" fill="#78350f">Bidder Email</text>
+  <line x1="540" y1="690" x2="800" y2="690" stroke="#fef08a" stroke-width="1"/>
+  <text x="556" y="708" fill="#78350f">Bid Amount</text>
+  <line x1="540" y1="716" x2="800" y2="716" stroke="#fef08a" stroke-width="1"/>
+  <text x="556" y="734" fill="#78350f">Bid Time</text>
+  <text x="556" y="752" fill="#64748b" font-size="10" font-style="italic">(default: CURRENT_TIMESTAMP)</text>
+
+  <!-- ENTITY: COMMISSION -->
+  <rect x="1060" y="300" width="280" height="250" rx="4" fill="white" stroke="#ea580c" stroke-width="2"/>
+  <rect x="1060" y="300" width="280" height="32" rx="4" fill="#ea580c"/>
+  <rect x="1060" y="324" width="280" height="8" fill="#ea580c"/>
+  <text x="1200" y="321" text-anchor="middle" font-size="13" font-weight="bold" fill="white">COMMISSION</text>
+  <text x="1076" y="350" fill="#7c2d12" font-weight="bold">🔑 Commission Id (PK)</text>
+  <line x1="1060" y1="358" x2="1340" y2="358" stroke="#fed7aa" stroke-width="1"/>
+  <text x="1076" y="376" fill="#c2410c">Item Id</text>
+  <line x1="1060" y1="384" x2="1340" y2="384" stroke="#fed7aa" stroke-width="1"/>
+  <text x="1076" y="402" fill="#c2410c">Seller Email</text>
+  <line x1="1060" y1="410" x2="1340" y2="410" stroke="#fed7aa" stroke-width="1"/>
+  <text x="1076" y="428" fill="#c2410c">Sale Amount</text>
+  <line x1="1060" y1="436" x2="1340" y2="436" stroke="#fed7aa" stroke-width="1"/>
+  <text x="1076" y="454" fill="#c2410c">Commission Pct</text>
+  <line x1="1060" y1="462" x2="1340" y2="462" stroke="#fed7aa" stroke-width="1"/>
+  <text x="1076" y="480" fill="#c2410c">Commission Amt</text>
+  <line x1="1060" y1="488" x2="1340" y2="488" stroke="#fed7aa" stroke-width="1"/>
+  <text x="1076" y="506" fill="#c2410c">Generated At</text>
+  <text x="1076" y="538" fill="#64748b" font-size="10" font-style="italic">(default: CURRENT_TIMESTAMP)</text>
+
+  <!-- REL 1: USERS LISTS ITEMS (1:N) -->
+  <line x1="260" y1="150" x2="540" y2="170" stroke="#475569" stroke-width="1.8" marker-end="url(#mk)"/>
+  <rect x="318" y="136" width="112" height="22" rx="3" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="374" y="151" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">LISTS  1 : N</text>
+  <text x="263" y="146" font-size="11" fill="#1d4ed8" font-weight="bold">1</text>
+  <text x="522" y="166" font-size="11" fill="#1d4ed8" font-weight="bold">N</text>
+
+  <!-- REL 2: USERS PLACES BIDS (1:N) -->
+  <polyline points="150,264 150,480 540,668" fill="none" stroke="#475569" stroke-width="1.8" marker-end="url(#mk)"/>
+  <rect x="156" y="456" width="130" height="22" rx="3" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="221" y="471" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">PLACES  1 : N</text>
+  <text x="156" y="288" font-size="11" fill="#1d4ed8" font-weight="bold">1</text>
+  <text x="522" y="664" font-size="11" fill="#1d4ed8" font-weight="bold">N</text>
+
+  <!-- REL 3: ITEMS HAS BIDS (1:N) -->
+  <line x1="670" y1="300" x2="670" y2="580" stroke="#475569" stroke-width="1.8" marker-end="url(#mk)"/>
+  <rect x="676" y="418" width="108" height="22" rx="3" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="730" y="433" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">HAS BIDS 1:N</text>
+  <text x="676" y="316" font-size="11" fill="#1d4ed8" font-weight="bold">1</text>
+  <text x="676" y="574" font-size="11" fill="#1d4ed8" font-weight="bold">N</text>
+
+  <!-- REL 4: ITEMS HAS COMMISSION (1:N) -->
+  <line x1="800" y1="190" x2="1060" y2="390" stroke="#475569" stroke-width="1.8" marker-end="url(#mk)"/>
+  <rect x="862" y="258" width="118" height="22" rx="3" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="921" y="273" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">HAS  1 : N</text>
+  <text x="802" y="186" font-size="11" fill="#1d4ed8" font-weight="bold">1</text>
+  <text x="1044" y="386" font-size="11" fill="#1d4ed8" font-weight="bold">N</text>
+
+  <!-- REL 5: ADMIN GENERATES COMMISSION (1:N) -->
+  <polyline points="260,750 660,750 660,870 1200,870 1200,550" fill="none" stroke="#475569" stroke-width="1.8" marker-end="url(#mk)"/>
+  <rect x="840" y="852" width="168" height="22" rx="3" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="924" y="867" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">GENERATES  1 : N</text>
+  <text x="263" y="746" font-size="11" fill="#1d4ed8" font-weight="bold">1</text>
+  <text x="1194" y="864" font-size="11" fill="#1d4ed8" font-weight="bold">N</text>
+
+  <!-- LEGEND -->
+  <rect x="40" y="916" width="740" height="50" rx="4" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="58" y="936" font-size="11" font-weight="bold" fill="#334155">Legend:</text>
+  <rect x="120" y="922" width="40" height="20" fill="white" stroke="#2563eb" stroke-width="2" rx="2"/>
+  <text x="166" y="936" font-size="11" fill="#334155">Entity</text>
+  <line x1="216" y1="932" x2="256" y2="932" stroke="#475569" stroke-width="1.8" marker-end="url(#mk)"/>
+  <text x="262" y="936" font-size="11" fill="#334155">Relationship (direction of data flow)</text>
+  <text x="58" y="956" font-size="10" fill="#64748b">🔑 = Primary Key    All cross-table email/id columns are plain — no FK constraints declared in Oracle DB</text>
+</svg>

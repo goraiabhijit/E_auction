@@ -3,8 +3,8 @@ package com.eauction.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Item implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Item  {
+   
 
     private int itemId;
     private String itemName;
@@ -14,6 +14,7 @@ public class Item implements Serializable {
     private Timestamp auctionEndTime;
     private String itemPicture;
     private String sellerEmail;
+    private double highestBid; // fetched via JOIN, 0.0 if no bids
 
     // Default Constructor
     public Item() {
@@ -58,4 +59,7 @@ public class Item implements Serializable {
 
     public String getSellerEmail() { return sellerEmail; }
     public void setSellerEmail(String sellerEmail) { this.sellerEmail = sellerEmail; }
+
+    public double getHighestBid() { return highestBid; }
+    public void setHighestBid(double highestBid) { this.highestBid = highestBid; }
 }

@@ -52,12 +52,17 @@ public class ItemDao {
         return null;
     }
 
-    // ── Step 3: getAllItems ──
+    // ── Step 3: getAllItems — includes highest bid via LEFT JOIN ──
     public List<Item> getAllItems() {
         List<Item> itemList = new ArrayList<>();
-        String sql = "SELECT item_id, item_name, item_description, starting_price, " +
-                     "auction_start_time, auction_end_time, item_picture, seller_email " +
-                     "FROM Item_Details ORDER BY auction_start_time DESC";
+        String sql = "SELECT i.item_id, i.item_name, i.item_description, i.starting_price, " +
+                     "i.auction_start_time, i.auction_end_time, i.item_picture, i.seller_email, " +
+                     "NVL(MAX(b.bid_amount), 0) AS highest_bid " +
+                     "FROM Item_Details i " +
+                     "LEFT JOIN Bid_Details b ON b.item_id = i.item_id " +
+                     "GROUP BY i.item_id, i.item_name, i.item_description, i.starting_price, " +
+                     "i.auction_start_time, i.auction_end_time, i.item_picture, i.seller_email " +
+                     "ORDER BY i.auction_start_time DESC";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -70,10 +75,10 @@ public class ItemDao {
                 item.setItemDescription(rs.getString("item_description"));
                 item.setStartingPrice(rs.getDouble("starting_price"));
                 item.setAuctionStartTime(rs.getTimestamp("auction_start_time"));
-                item.setAuctionEndTime(rs.getTimestamp("auction_end_time"));   // new
+                item.setAuctionEndTime(rs.getTimestamp("auction_end_time"));
                 item.setItemPicture(rs.getString("item_picture"));
                 item.setSellerEmail(rs.getString("seller_email"));
-
+                item.setHighestBid(rs.getDouble("highest_bid"));
                 itemList.add(item);
             }
         } catch (Exception e) {
@@ -86,10 +91,15 @@ public class ItemDao {
     // ── Active items: auction_end_time > NOW ──
     public List<Item> getActiveItems() {
         List<Item> items = new ArrayList<>();
-        String sql = "SELECT item_id, item_name, item_description, starting_price, " +
-                     "auction_start_time, auction_end_time, item_picture, seller_email " +
-                     "FROM Item_Details WHERE auction_end_time > CURRENT_TIMESTAMP " +
-                     "ORDER BY auction_end_time ASC";
+        String sql = "SELECT i.item_id, i.item_name, i.item_description, i.starting_price, " +
+                     "i.auction_start_time, i.auction_end_time, i.item_picture, i.seller_email, " +
+                     "NVL(MAX(b.bid_amount), 0) AS highest_bid " +
+                     "FROM Item_Details i " +
+                     "LEFT JOIN Bid_Details b ON b.item_id = i.item_id " +
+                     "WHERE i.auction_end_time > CURRENT_TIMESTAMP " +
+                     "GROUP BY i.item_id, i.item_name, i.item_description, i.starting_price, " +
+                     "i.auction_start_time, i.auction_end_time, i.item_picture, i.seller_email " +
+                     "ORDER BY i.auction_end_time ASC";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -105,6 +115,7 @@ public class ItemDao {
                 item.setAuctionEndTime(rs.getTimestamp("auction_end_time"));
                 item.setItemPicture(rs.getString("item_picture"));
                 item.setSellerEmail(rs.getString("seller_email"));
+                item.setHighestBid(rs.getDouble("highest_bid"));
                 items.add(item);
             }
         } catch (Exception e) {
@@ -116,10 +127,15 @@ public class ItemDao {
     // ── Completed items: auction_end_time <= NOW ──
     public List<Item> getCompletedItems() {
         List<Item> items = new ArrayList<>();
-        String sql = "SELECT item_id, item_name, item_description, starting_price, " +
-                     "auction_start_time, auction_end_time, item_picture, seller_email " +
-                     "FROM Item_Details WHERE auction_end_time <= CURRENT_TIMESTAMP " +
-                     "ORDER BY auction_end_time DESC";
+        String sql = "SELECT i.item_id, i.item_name, i.item_description, i.starting_price, " +
+                     "i.auction_start_time, i.auction_end_time, i.item_picture, i.seller_email, " +
+                     "NVL(MAX(b.bid_amount), 0) AS highest_bid " +
+                     "FROM Item_Details i " +
+                     "LEFT JOIN Bid_Details b ON b.item_id = i.item_id " +
+                     "WHERE i.auction_end_time <= CURRENT_TIMESTAMP " +
+                     "GROUP BY i.item_id, i.item_name, i.item_description, i.starting_price, " +
+                     "i.auction_start_time, i.auction_end_time, i.item_picture, i.seller_email " +
+                     "ORDER BY i.auction_end_time DESC";
 
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -135,6 +151,7 @@ public class ItemDao {
                 item.setAuctionEndTime(rs.getTimestamp("auction_end_time"));
                 item.setItemPicture(rs.getString("item_picture"));
                 item.setSellerEmail(rs.getString("seller_email"));
+                item.setHighestBid(rs.getDouble("highest_bid"));
                 items.add(item);
             }
         } catch (Exception e) {
@@ -143,7 +160,47 @@ public class ItemDao {
         return items;
     }
 
-    // ── Step 2: putItem — include auction_start_time and auction_end_time ──    public boolean putItem(Item item) {
+    // ── Get items listed by a specific seller ──
+    public List<Item> getItemsBySellerEmail(String sellerEmail) {
+        List<Item> items = new ArrayList<>();
+        String sql = "SELECT i.item_id, i.item_name, i.item_description, i.starting_price, " +
+                     "i.auction_start_time, i.auction_end_time, i.item_picture, i.seller_email, " +
+                     "NVL(MAX(b.bid_amount), 0) AS highest_bid " +
+                     "FROM Item_Details i " +
+                     "LEFT JOIN Bid_Details b ON b.item_id = i.item_id " +
+                     "WHERE i.seller_email = ? " +
+                     "GROUP BY i.item_id, i.item_name, i.item_description, i.starting_price, " +
+                     "i.auction_start_time, i.auction_end_time, i.item_picture, i.seller_email " +
+                     "ORDER BY i.auction_start_time DESC";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, sellerEmail);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Item item = new Item();
+                    item.setItemId(rs.getInt("item_id"));
+                    item.setItemName(rs.getString("item_name"));
+                    item.setItemDescription(rs.getString("item_description"));
+                    item.setStartingPrice(rs.getDouble("starting_price"));
+                    item.setAuctionStartTime(rs.getTimestamp("auction_start_time"));
+                    item.setAuctionEndTime(rs.getTimestamp("auction_end_time"));
+                    item.setItemPicture(rs.getString("item_picture"));
+                    item.setSellerEmail(rs.getString("seller_email"));
+                    item.setHighestBid(rs.getDouble("highest_bid"));
+                    items.add(item);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return items;
+    }
+
+    // ── Step 2: putItem — include auction_start_time and auction_end_time ──   
+     public boolean putItem(Item item) {
         String sql = "INSERT INTO Item_Details " +
                      "(item_id, item_name, item_description, item_picture, starting_price, " +
                      "auction_start_time, auction_end_time, seller_email) " +

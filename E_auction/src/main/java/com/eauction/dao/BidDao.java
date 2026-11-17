@@ -119,4 +119,35 @@ public class BidDao {
 
         return bids;
     }
+
+    // Returns all bids for a specific item ordered highest first (for bid history modal)
+    public List<Bid> getBidsByItemId(int itemId) {
+        List<Bid> bids = new ArrayList<>();
+        String sql = "SELECT b.bid_id, b.item_id, b.bidder_email, b.bid_amount, b.bid_time, i.item_name " +
+                     "FROM Bid_Details b JOIN Item_Details i ON b.item_id = i.item_id " +
+                     "WHERE b.item_id = ? ORDER BY b.bid_amount DESC";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, itemId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Bid bid = new Bid();
+                    bid.setBidId(rs.getInt("bid_id"));
+                    bid.setItemId(rs.getInt("item_id"));
+                    bid.setItemName(rs.getString("item_name"));
+                    bid.setBidderEmail(rs.getString("bidder_email"));
+                    bid.setBidAmount(rs.getDouble("bid_amount"));
+                    bid.setBidTime(rs.getTimestamp("bid_time"));
+                    bids.add(bid);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bids;
+    }
 }

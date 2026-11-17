@@ -8,12 +8,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.eauction.dao.AuctionResultDao;
+import com.eauction.dao.CommissionDao;
 import com.eauction.dao.ItemDao;
 import com.eauction.dao.UserDao;
 import com.eauction.model.AuctionResult;
+import com.eauction.model.Commission;
 import com.eauction.model.Item;
 import com.eauction.model.User;
 
@@ -45,20 +49,31 @@ public class AdminDashboardServlet extends HttpServlet {
         List<Item> activeItems    = itemDao.getActiveItems();
         List<Item> completedItems = itemDao.getCompletedItems();
 
-        // ── Auction Details tab ──
+        // ── Commission tab: completed items that have bids ──
         AuctionResultDao auctionResultDao = new AuctionResultDao();
-        List<AuctionResult> completedAuctions = auctionResultDao.getCompletedAuctions();
+        List<AuctionResult> completedWithBids = auctionResultDao.getCompletedAuctions();
+
+        // ── For each completed item, check if commission already exists ──
+        CommissionDao commissionDao = new CommissionDao();
+        Map<Integer, Commission> commissionMap = new HashMap<>();
+        for (AuctionResult ar : completedWithBids) {
+            Commission existing = commissionDao.getCommissionByItemId(ar.getItemId());
+            if (existing != null) {
+                commissionMap.put(ar.getItemId(), existing);
+            }
+        }
 
         // ── Dashboard stat counts ──
-        int totalUsers    = allUsers.size();
-        int activeCount   = activeItems.size();
+        int totalUsers     = allUsers.size();
+        int activeCount    = activeItems.size();
         int completedCount = completedItems.size();
 
         // ── Attach all to request ──
         request.setAttribute("allUsers",           allUsers);
         request.setAttribute("activeItems",        activeItems);
         request.setAttribute("completedItems",     completedItems);
-        request.setAttribute("completedAuctions",  completedAuctions);
+        request.setAttribute("completedWithBids",  completedWithBids);
+        request.setAttribute("commissionMap",      commissionMap);
         request.setAttribute("totalUsers",         totalUsers);
         request.setAttribute("activeCount",        activeCount);
         request.setAttribute("completedCount",     completedCount);

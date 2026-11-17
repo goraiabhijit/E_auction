@@ -13,8 +13,12 @@ import jakarta.servlet.http.HttpSession;
 
 import com.eauction.dao.ItemDao;
 import com.eauction.dao.BidDao;
+import com.eauction.dao.CommissionDao;
+import com.eauction.dao.AuctionResultDao;
 import com.eauction.model.Item;
 import com.eauction.model.Bid;
+import com.eauction.model.Commission;
+import com.eauction.model.AuctionResult;
 import com.eauction.model.User;
 
 @WebServlet("/DashboardServlet")
@@ -26,38 +30,56 @@ public class DashboardServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        // 1. Session Guard Check
+
+        // Session guard
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("currentUser") == null) {
             response.sendRedirect("signin.html");
             return;
         }
 
-        // 2. Fetch real active items from Oracle DB via ItemDao
-        ItemDao itemDao = new ItemDao();
-        List<Item> itemList = itemDao.getAllItems();
-
-        // 3. Fetch bids — user's own bids and all bids
         User loggedInUser = (User) session.getAttribute("currentUser");
-        BidDao bidDao = new BidDao();
-        List<Bid> myBids  = bidDao.getBidsByUser(loggedInUser.getEmail());
+        String email = loggedInUser.getEmail();
+
+        ItemDao       itemDao       = new ItemDao();
+        BidDao        bidDao        = new BidDao();
+        CommissionDao commissionDao = new CommissionDao();
+
+        // ── Tab 1: Live Auctions — all items (active + ended), sidebar toggle handled in JSP ──
+        List<Item> allItems = itemDao.getAllItems();
+
+        // ── Tab 2: My Bids — items this user has bid on, with highest bid per item ──
+        List<Bid> myBids = bidDao.getBidsByUser(email);
+
+        // ── All bids for bid history modal ──
         List<Bid> allBids = bidDao.getAllBids();
 
-        // 4. Attach all lists to request scope
-        request.setAttribute("itemList", itemList);
-        request.setAttribute("myBids",   myBids);
-        request.setAttribute("allBids",  allBids);
+        // ── Tab 3: My Listings — items this user listed as seller ──
+        List<Item> myListings = itemDao.getItemsBySellerEmail(email);
 
-        // 4. Forward execution to dashboard.jsp
+        // ── My Commissions (shown inside My Listings tab) ──
+        List<Commission> myCommissions = commissionDao.getCommissionsBySellerEmail(email);
+
+        // ── My Winnings — auctions this user won ──
+        AuctionResultDao auctionResultDao = new AuctionResultDao();
+        List<AuctionResult> myWinnings = auctionResultDao.getWinningsByBuyerEmail(email);
+
+        // ── Attach to request ──
+        request.setAttribute("allItems",      allItems);
+        request.setAttribute("myBids",        myBids);
+        request.setAttribute("allBids",       allBids);
+        request.setAttribute("myListings",    myListings);
+        request.setAttribute("myCommissions", myCommissions);
+        request.setAttribute("myWinnings",    myWinnings);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
         dispatcher.forward(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
     }

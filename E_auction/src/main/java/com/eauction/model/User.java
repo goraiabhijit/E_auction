@@ -2,8 +2,8 @@ package com.eauction.model;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class User {
+   
 
     private String name;
     private String email;

@@ -28,7 +28,7 @@
 
 <div class="form-card">
     <h2>Put Item for Auction</h2>
-    <form action="PutItemServlet" method="POST" enctype="multipart/form-data">
+    <form action="PutItemServlet" method="POST">
         <div class="form-group">
             <label for="itemName">Item Title</label>
             <input type="text" id="itemName" name="itemName" required />
